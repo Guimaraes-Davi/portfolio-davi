@@ -1,0 +1,90 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Skills from "../components/Skills.astro";
+import Experience from "../components/Experience.astro";
+import Education from "../components/Education.astro";
+import ProjectGrid from "../components/ProjectGrid.astro";
+import Contact from "../components/Contact.astro";
+import Section from "../components/Section.astro";
+import { getAllProjects } from "../utils/projects";
+
+const projects = await getAllProjects();
+---
+
+<BaseLayout>
+  <!-- Hero: no Section wrapper — full viewport height -->
+  <Hero />
+
+  <Section
+    id="sobre"
+    title="Sobre mim"
+    subtitle="Desenvolvedor, entusiasta de segurança e usuário de ERP."
+  >
+    <About />
+  </Section>
+
+  <Section
+    id="habilidades"
+    title="Habilidades"
+    subtitle="Stack agrupada por área de atuação."
+    class="bg-[var(--bg-subtle)]"
+  >
+    <Skills />
+  </Section>
+
+  <Section
+    id="experiencia"
+    title="Experiência"
+    subtitle="Onde aplico o que aprendo todos os dias."
+  >
+    <Experience />
+  </Section>
+
+  <Section
+    id="formacao"
+    title="Formação"
+    subtitle="Base acadêmica focada em onde quero chegar."
+    class="bg-[var(--bg-subtle)]"
+  >
+    <Education />
+  </Section>
+
+  <Section
+    id="projetos"
+    title="Projetos"
+    subtitle="Ferramentas reais, com utilidade real. Clique para ver os detalhes."
+  >
+    <ProjectGrid projects={projects} />
+    <div class="mt-8 text-center">
+      <a href="/projetos" class="btn-outline">
+        Ver todos os projetos
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </Section>
+
+  <Section
+    id="contato"
+    title="Contato"
+    subtitle="Aberto a projetos, colaborações e conversas técnicas."
+    class="bg-[var(--bg-subtle)]"
+  >
+    <Contact />
+  </Section>
+</BaseLayout>

@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectGrid from "../../components/ProjectGrid.astro";
+import { getAllProjects } from "../../utils/projects";
+import { SITE } from "../../config";
+
+const projects = await getAllProjects();
+const title = `Projetos — ${SITE.fullName}`;
+const description =
+  "Todos os projetos de Davi Guimarães — aplicações web com foco em segurança, criptografia E2E e deployabilidade.";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="container pt-12 pb-24">
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="mb-10">
+      <ol class="flex items-center gap-2 text-sm text-[var(--text-muted)]">
+        <li>
+          <a href="/" class="hover:text-[var(--text)] transition-colors">Home</a>
+        </li>
+        <li aria-hidden="true">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </li>
+        <li aria-current="page" class="text-[var(--text)] font-medium">
+          Projetos
+        </li>
+      </ol>
+    </nav>
+
+    <div class="max-w-2xl mb-12">
+      <h1 class="text-display-1 font-bold text-[var(--text)] mb-3">Projetos</h1>
+      <p class="text-[var(--text-muted)] leading-relaxed">
+        Ferramentas construídas com utilidade real — criptografia aplicada,
+        deployáveis e self-contained. Filtre por status ou explore todos.
+      </p>
+    </div>
+
+    <ProjectGrid projects={projects} />
+  </div>
+</BaseLayout>

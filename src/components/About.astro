@@ -1,0 +1,78 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<div class="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
+  <!-- Text -->
+  <div>
+    <p class="text-[var(--text)] leading-relaxed mb-5">
+      Tenho 20 anos, sou de Feira de Santana — Bahia, e desde 2022 venho
+      construindo uma trajetória sólida em desenvolvimento de software. Comecei
+      com lógica de programação, passei pelo técnico no SENAI, concluí o
+      tecnólogo em Desenvolvimento Back-End pela Anhanguera, e atualmente curso
+      Engenharia de Software pela UNIFAN. No segundo semestre de 2026 inicio uma
+      pós-graduação em Segurança de Dados.
+    </p>
+    <p class="text-[var(--text)] leading-relaxed mb-5">
+      Profissionalmente, atuo desde 2023 em suporte técnico a sistemas ERP —
+      uma experiência que me deu fluência em fluxos de negócio complexos,
+      módulos fiscais brasileiros (NF-e, CT-e, MDF-e), gestão de estoque,
+      faturamento e integração entre sistemas. Trabalhei com clientes regionais
+      e nacionais, e aprendi a diagnosticar problemas técnicos sob pressão.
+    </p>
+    <p class="text-[var(--text)] leading-relaxed">
+      Em paralelo, construo projetos pessoais que cobrem áreas que me
+      interessam: criptografia ponta a ponta, IA local com LLMs, parsing de
+      documentos fiscais, sistemas multi-agente. Busco minha primeira
+      oportunidade como desenvolvedor — júnior ou estágio — em qualquer área de
+      software, com abertura total para freelance e startups.
+    </p>
+  </div>
+
+  <!-- Side info -->
+  <div class="space-y-4">
+    <div class="rounded-xl border border-[var(--border)] p-5">
+      <h3
+        class="text-xs font-semibold text-[var(--text)] uppercase tracking-wider mb-4"
+      >
+        O que me define
+      </h3>
+      <ul class="space-y-2.5 text-sm text-[var(--text-muted)]">
+        <li class="flex items-start gap-2.5">
+          <Icon name="check" size={14} class="text-[#16a34a] mt-0.5 flex-shrink-0" />
+          <span>Código limpo, funcional e deployável</span>
+        </li>
+        <li class="flex items-start gap-2.5">
+          <Icon name="check" size={14} class="text-[#16a34a] mt-0.5 flex-shrink-0" />
+          <span>Segurança aplicada desde o design</span>
+        </li>
+        <li class="flex items-start gap-2.5">
+          <Icon name="check" size={14} class="text-[#16a34a] mt-0.5 flex-shrink-0" />
+          <span>Backend robusto com Python e Node.js</span>
+        </li>
+        <li class="flex items-start gap-2.5">
+          <Icon name="check" size={14} class="text-[#16a34a] mt-0.5 flex-shrink-0" />
+          <span>Criptografia E2E real — não só HTTPS</span>
+        </li>
+        <li class="flex items-start gap-2.5">
+          <Icon name="check" size={14} class="text-[#16a34a] mt-0.5 flex-shrink-0" />
+          <span>Projetos com utilidade real, não só exercícios</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rounded-xl border border-[var(--border)] p-5">
+      <h3
+        class="text-xs font-semibold text-[var(--text)] uppercase tracking-wider mb-3"
+      >
+        Disponibilidade
+      </h3>
+      <ul class="space-y-1.5 text-sm text-[var(--text-muted)]">
+        <li>CLT — horário comercial ou remoto</li>
+        <li>Estágio — 30h ou 40h semanais</li>
+        <li>Freelance — projetos pontuais</li>
+        <li>Startup — equity aceito</li>
+      </ul>
+    </div>
+  </div>
+</div>

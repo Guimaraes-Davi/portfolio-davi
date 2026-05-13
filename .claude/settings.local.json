@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(node -e \"const p = require\\('./node_modules/@astrojs/sitemap/package.json'\\); console.log\\(p.version\\)\")",
+      "Bash(node -e \"const fs = require\\('fs'\\); const lines = fs.readFileSync\\('./node_modules/@astrojs/sitemap/dist/index.js', 'utf8'\\).split\\('\\\\n'\\); console.log\\(lines.slice\\(80, 95\\).join\\('\\\\n'\\)\\)\")",
+      "Bash(node -e \"const p = require\\('./node_modules/astro/package.json'\\); console.log\\(p.version\\)\")",
+      "Bash(dir \"C:\\\\Users\\\\davig\\\\Documents\\\\Projetos\\\\Curriculo\\\\src\\\\content\\\\projects\")"
+    ]
+  }
+}

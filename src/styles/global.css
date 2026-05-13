@@ -1,0 +1,262 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #ffffff;
+    --bg-subtle: #f5f5f5;
+    --text: #0a0a0a;
+    --text-muted: #525252;
+    --border: #e5e5e5;
+    --accent: #171717;
+  }
+
+  .dark {
+    --bg: #0a0a0a;
+    --bg-subtle: #141414;
+    --text: #fafafa;
+    --text-muted: #a3a3a3;
+    --border: #262626;
+    --accent: #fafafa;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: "Inter Variable", "Inter", system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    transition: background-color 200ms ease, color 200ms ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-property: background-color, border-color, color;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+  }
+
+  /* Exceções para transições — não animar transforms, opacity etc. no tema */
+  a,
+  button {
+    transition-property: background-color, border-color, color, opacity,
+      transform, box-shadow;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--bg);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.2;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  code,
+  pre,
+  kbd,
+  samp {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 0.875rem;
+  }
+
+  pre {
+    overflow-x: auto;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    line-height: 1.7;
+  }
+
+  code {
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    padding: 0.15em 0.4em;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  p + p {
+    margin-top: 1rem;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+  }
+
+  .btn {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-[var(--accent)] text-[var(--bg)] hover:opacity-80 focus-visible:ring-[var(--accent)];
+  }
+
+  .btn-outline {
+    @apply btn border border-[var(--border)] text-[var(--text)] hover:bg-[var(--bg-subtle)] focus-visible:ring-[var(--accent)];
+  }
+
+  .section-title {
+    @apply text-display-2 font-semibold text-[var(--text)] mb-2;
+  }
+
+  .section-subtitle {
+    @apply text-[var(--text-muted)] text-base;
+  }
+
+  /* Prose styles for project content */
+  .prose {
+    @apply text-[var(--text)] max-w-none;
+  }
+
+  .prose h2 {
+    @apply text-display-3 font-semibold mt-8 mb-4;
+  }
+
+  .prose h3 {
+    @apply text-lg font-semibold mt-6 mb-3;
+  }
+
+  .prose p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  .prose ul {
+    @apply list-disc list-inside mb-4 space-y-1;
+  }
+
+  .prose ol {
+    @apply list-decimal list-inside mb-4 space-y-1;
+  }
+
+  .prose li {
+    @apply leading-relaxed;
+  }
+
+  .prose strong {
+    @apply font-semibold;
+  }
+
+  .prose a {
+    @apply underline underline-offset-2 hover:opacity-70;
+  }
+
+  .prose blockquote {
+    @apply border-l-4 border-[var(--border)] pl-4 italic text-[var(--text-muted)] my-4;
+  }
+
+  .prose pre {
+    @apply my-4;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: var(--accent);
+  color: var(--bg);
+  border-radius: 0 0 0.5rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: top 200ms ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Hamburger animation */
+.hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--text);
+  transition: transform 200ms ease, opacity 200ms ease;
+  transform-origin: center;
+}
+
+[data-menu-open="true"] .hamburger-line:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+[data-menu-open="true"] .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+[data-menu-open="true"] .hamburger-line:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}

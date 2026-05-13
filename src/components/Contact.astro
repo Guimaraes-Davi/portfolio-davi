@@ -1,0 +1,80 @@
+---
+import { CONTACT } from "../config";
+import Icon from "./Icon.astro";
+
+const links = [
+  {
+    label: "Email",
+    detail: CONTACT.email,
+    href: `mailto:${CONTACT.email}`,
+    icon: "mail" as const,
+    external: false,
+    ariaLabel: "Enviar email para Davi",
+  },
+  {
+    label: "GitHub",
+    detail: `github.com/${CONTACT.githubUsername}`,
+    href: CONTACT.githubUrl,
+    icon: "github" as const,
+    external: true,
+    ariaLabel: "Perfil do GitHub de Davi (abre em nova aba)",
+  },
+  {
+    label: "LinkedIn",
+    detail: `linkedin.com/in/${CONTACT.linkedinUsername}`,
+    href: CONTACT.linkedinUrl,
+    icon: "linkedin" as const,
+    external: true,
+    ariaLabel: "Perfil do LinkedIn de Davi (abre em nova aba)",
+  },
+];
+---
+
+<div class="grid md:grid-cols-2 gap-10 md:gap-20 items-start">
+  <!-- Left: copy -->
+  <div>
+    <p class="text-[var(--text)] leading-relaxed mb-5">
+      Estou aberto a projetos freelance, colaborações e oportunidades de
+      trabalho. Se você tem uma ideia que precisa de execução técnica — ou uma
+      vaga júnior/estágio para um desenvolvedor focado em segurança e código
+      real — pode falar comigo.
+    </p>
+    <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-5">
+      Respondo por email. Para assuntos urgentes, LinkedIn funciona mais rápido.
+    </p>
+    <div
+      class="flex items-center gap-2 text-sm text-[var(--text-muted)] font-mono"
+    >
+      <Icon name="phone" size={14} />
+      {CONTACT.phone}
+    </div>
+  </div>
+
+  <!-- Right: links -->
+  <div class="space-y-3">
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          target={link.external ? "_blank" : undefined}
+          rel={link.external ? "noopener noreferrer" : undefined}
+          class="flex items-center gap-4 p-4 rounded-xl border border-[var(--border)] hover:border-[var(--accent)] hover:bg-[var(--bg-subtle)] transition-colors group"
+          aria-label={link.ariaLabel}
+        >
+          <div class="w-10 h-10 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border)] flex items-center justify-center flex-shrink-0 group-hover:border-[var(--accent)] transition-colors">
+            <Icon name={link.icon} size={18} class="text-[var(--text-muted)]" />
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-medium text-[var(--text)]">{link.label}</p>
+            <p class="text-xs text-[var(--text-muted)] truncate">{link.detail}</p>
+          </div>
+          <Icon
+            name="arrow-right"
+            size={14}
+            class="ml-auto text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity"
+          />
+        </a>
+      ))
+    }
+  </div>
+</div>

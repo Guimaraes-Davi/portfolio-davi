@@ -1,0 +1,40 @@
+---
+type Status = "finalizado" | "em-andamento" | "futuro";
+
+interface Props {
+  status: Status;
+}
+
+const { status } = Astro.props;
+
+const config: Record<Status, { label: string; color: string; dot: string }> = {
+  finalizado: {
+    label: "Finalizado",
+    color: "text-[#16a34a] bg-[#16a34a]/10 border-[#16a34a]/20",
+    dot: "bg-[#16a34a]",
+  },
+  "em-andamento": {
+    label: "Em andamento",
+    color: "text-[#d97706] bg-[#d97706]/10 border-[#d97706]/20",
+    dot: "bg-[#d97706]",
+  },
+  futuro: {
+    label: "Futuro",
+    color: "text-[#737373] bg-[#737373]/10 border-[#737373]/20",
+    dot: "bg-[#737373]",
+  },
+};
+
+const { label, color, dot } = config[status];
+---
+
+<span
+  class:list={[
+    "inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border",
+    color,
+  ]}
+>
+  <span class:list={["w-1.5 h-1.5 rounded-full flex-shrink-0", dot]} aria-hidden="true"
+  ></span>
+  {label}
+</span>

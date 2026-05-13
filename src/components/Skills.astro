@@ -1,0 +1,102 @@
+---
+import Icon from "./Icon.astro";
+import type { ComponentProps } from "astro/types";
+
+type IconName = ComponentProps<typeof Icon>["name"];
+
+const skillGroups: Array<{
+  category: string;
+  icon: IconName;
+  skills: string[];
+}> = [
+  {
+    category: "Backend",
+    icon: "server",
+    skills: ["Python", "Flask", "Node.js", "Express", "SQLite", "REST APIs"],
+  },
+  {
+    category: "Frontend",
+    icon: "monitor",
+    skills: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Tailwind CSS",
+      "Dark Mode",
+      "Responsivo",
+    ],
+  },
+  {
+    category: "Segurança e Criptografia",
+    icon: "shield",
+    skills: ["JWT", "bcrypt", "AES-256-CBC", "TweetNaCl (E2E)", "HTTPS/TLS"],
+  },
+  {
+    category: "IA e Sistemas Multi-Agente",
+    icon: "cpu",
+    skills: [
+      "Ollama",
+      "DeepSeek Coder V2",
+      "Qwen2.5-Coder",
+      "Pydantic v2",
+      "LLMs locais",
+    ],
+  },
+  {
+    category: "Ferramentas",
+    icon: "wrench",
+    skills: [
+      "Git / GitHub",
+      "Docker",
+      "Socket.io",
+      "lxml",
+      "mypy",
+      "radon",
+      "vulture",
+    ],
+  },
+  {
+    category: "Sistemas ERP",
+    icon: "briefcase",
+    skills: [
+      "ERP CARGO",
+      "Varejo Fácil",
+      "SYSPDV",
+      "Milênio",
+      "HOST",
+      "NF-e / CT-e / MDF-e",
+    ],
+  },
+  {
+    category: "Idiomas",
+    icon: "globe",
+    skills: ["Português — nativo", "Inglês — intermediário"],
+  },
+];
+---
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  {
+    skillGroups.map((group) => (
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--bg)] p-5">
+        <div class="flex items-center gap-2.5 mb-4">
+          <Icon
+            name={group.icon}
+            size={16}
+            class="text-[var(--text-muted)] flex-shrink-0"
+          />
+          <h3 class="font-semibold text-[var(--text)] text-sm">
+            {group.category}
+          </h3>
+        </div>
+        <div class="flex flex-wrap gap-1.5">
+          {group.skills.map((skill) => (
+            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-mono bg-[var(--bg-subtle)] text-[var(--text-muted)] border border-[var(--border)]">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</div>

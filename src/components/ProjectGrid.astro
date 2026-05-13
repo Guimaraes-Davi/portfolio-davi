@@ -1,0 +1,101 @@
+---
+import ProjectCard from "./ProjectCard.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  projects: CollectionEntry<"projects">[];
+}
+
+const { projects } = Astro.props;
+---
+
+<!-- Filter buttons -->
+<div
+  class="flex flex-wrap gap-2 mb-10"
+  role="group"
+  aria-label="Filtrar projetos por status"
+>
+  {
+    (
+      [
+        { value: "all", label: "Todos" },
+        { value: "finalizado", label: "Finalizados" },
+        { value: "em-andamento", label: "Em andamento" },
+        { value: "futuro", label: "Futuros" },
+      ] as const
+    ).map((filter) => (
+      <button
+        class="filter-btn px-4 py-2 rounded-lg text-sm border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--text)] transition-colors data-[active=true]:bg-[var(--accent)] data-[active=true]:text-[var(--bg)] data-[active=true]:border-[var(--accent)]"
+        data-filter={filter.value}
+        data-active={filter.value === "all" ? "true" : "false"}
+        aria-pressed={filter.value === "all" ? "true" : "false"}
+      >
+        {filter.label}
+      </button>
+    ))
+  }
+</div>
+
+<!-- Projects grid -->
+<div
+  id="projects-grid"
+  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5"
+  role="list"
+>
+  {
+    projects.map((project) => (
+      <div
+        class="project-item"
+        data-status={project.data.status}
+        role="listitem"
+      >
+        <ProjectCard project={project} />
+      </div>
+    ))
+  }
+</div>
+
+<!-- Empty state -->
+<p
+  id="no-projects"
+  class="hidden text-center text-[var(--text-muted)] py-16 text-sm"
+  aria-live="polite"
+>
+  Nenhum projeto encontrado com esse filtro.
+</p>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+  const items = document.querySelectorAll<HTMLElement>(".project-item");
+  const noProjects = document.getElementById("no-projects");
+
+  function applyFilter(filter: string) {
+    let visible = 0;
+
+    items.forEach((item) => {
+      const status = item.dataset.status ?? "";
+      const show = filter === "all" || status === filter;
+      item.style.display = show ? "" : "none";
+      if (show) visible++;
+    });
+
+    if (noProjects) {
+      noProjects.classList.toggle("hidden", visible > 0);
+    }
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const filter = btn.dataset.filter ?? "all";
+
+      buttons.forEach((b) => {
+        b.dataset.active = "false";
+        b.setAttribute("aria-pressed", "false");
+      });
+      btn.dataset.active = "true";
+      btn.setAttribute("aria-pressed", "true");
+
+      applyFilter(filter);
+    });
+  });
+</script>

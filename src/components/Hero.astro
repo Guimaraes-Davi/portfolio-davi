@@ -1,0 +1,62 @@
+---
+import { CONTACT, SITE } from "../config";
+import Icon from "./Icon.astro";
+---
+
+<section
+  class="min-h-[calc(100vh-4rem)] flex items-center py-20"
+  aria-label="Apresentação"
+>
+  <div class="container">
+    <div class="max-w-3xl">
+      <!-- Location indicator -->
+      <p
+        class="font-mono text-sm text-[var(--text-muted)] mb-6 flex items-center gap-2"
+      >
+        <Icon name="map-pin" size={14} class="text-[var(--text-muted)]" />
+        {SITE.location}
+      </p>
+
+      <!-- Headline -->
+      <h1
+        class="text-[clamp(2rem,5vw,3.25rem)] font-bold text-[var(--text)] leading-[1.1] tracking-tight mb-5 text-balance"
+      >
+        Desenvolvedor Full-Stack em busca de oportunidade
+        <span class="text-[var(--text-muted)] font-semibold"
+          >Junior ou Estagio</span
+        >
+      </h1>
+
+      <!-- Subheadline -->
+      <p
+        class="text-base md:text-lg text-[var(--text-muted)] leading-relaxed mb-4 max-w-xl"
+      >
+        Back-end, banco de dados, IA, segurança, full-stack ou front-end.
+        Disponivel para CLT, freelance e startups.
+      </p>
+
+      <!-- Bio -->
+      <p class="text-sm text-[var(--text-muted)] leading-relaxed mb-10 max-w-lg">
+        Tecnologo em Desenvolvimento Back-End e Tecnico em Desenvolvimento de
+        Sistemas. Construo aplicacoes completas com foco em codigo limpo,
+        seguranca e utilidade real.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap gap-3 mb-4">
+        <a href="/#projetos" class="btn-primary">
+          Ver projetos
+          <Icon name="arrow-right" size={16} />
+        </a>
+        <a href={`mailto:${CONTACT.email}`} class="btn-outline">
+          Entrar em contato
+        </a>
+      </div>
+
+      <!-- Availability note -->
+      <p class="text-xs text-[var(--text-muted)]">
+        Aberto a oportunidades CLT, estagio, freelance e projetos em startups.
+      </p>
+    </div>
+  </div>
+</section>

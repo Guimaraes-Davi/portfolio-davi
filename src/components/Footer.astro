@@ -1,0 +1,81 @@
+---
+import { CONTACT, SITE } from "../config";
+import Icon from "./Icon.astro";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-[var(--border)] mt-auto">
+  <div class="container py-10">
+    <div
+      class="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-[var(--text-muted)]"
+    >
+      <!-- Left: copyright + direct contact -->
+      <div class="text-center md:text-left space-y-1">
+        <p>
+          &copy; {year}
+          {SITE.fullName}. Todos os direitos reservados.
+        </p>
+        <p class="text-xs flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-1">
+          <a
+            href={`mailto:${CONTACT.email}`}
+            class="hover:text-[var(--text)] transition-colors"
+          >
+            {CONTACT.email}
+          </a>
+          <span aria-hidden="true" class="hidden md:inline">·</span>
+          <span class="flex items-center gap-1">
+            <Icon name="phone" size={11} />
+            {CONTACT.phone}
+          </span>
+        </p>
+      </div>
+
+      <!-- Center: social links -->
+      <div class="flex items-center gap-5">
+        <a
+          href={`mailto:${CONTACT.email}`}
+          class="hover:text-[var(--text)] transition-colors"
+          aria-label="Enviar email para Davi"
+        >
+          Email
+        </a>
+        <a
+          href={CONTACT.githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-[var(--text)] transition-colors"
+          aria-label="Perfil do GitHub de Davi (abre em nova aba)"
+        >
+          GitHub
+        </a>
+        <a
+          href={CONTACT.linkedinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-[var(--text)] transition-colors"
+          aria-label="Perfil do LinkedIn de Davi (abre em nova aba)"
+        >
+          LinkedIn
+        </a>
+      </div>
+
+      <!-- Right: built with -->
+      <p class="text-xs text-center md:text-right">
+        Construído com <a
+          href="https://astro.build"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-[var(--text)] transition-colors underline underline-offset-2"
+          >Astro</a
+        > · Hospedado na <a
+          href="https://pages.cloudflare.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-[var(--text)] transition-colors underline underline-offset-2"
+          >Cloudflare Pages</a
+        >
+      </p>
+    </div>
+  </div>
+</footer>

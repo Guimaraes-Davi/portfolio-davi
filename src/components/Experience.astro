@@ -1,0 +1,92 @@
+---
+import RecommendationBadge from "./RecommendationBadge.astro";
+
+const experiences = [
+  {
+    company: "ENOVA Tecnologia",
+    role: "Analista de Suporte Técnico",
+    contract: "Estágio · 30h semanais",
+    period: "Set 2023 — Atual",
+    location: "Feira de Santana, BA",
+    description:
+      "Sustentação do sistema ERP CARGO, voltado para logística e transportes. Diagnóstico e resolução de incidentes técnicos analisando fluxos de dados e regras de negócio complexas. Suporte nos módulos fiscais CT-e, MDF-e e NF-e, gestão de estoque, faturamento, compras e controle de frota.",
+    highlights: [
+      "ERP CARGO — logística e transportes",
+      "Módulos fiscais: CT-e, MDF-e, NF-e",
+      "Diagnóstico e resolução de incidentes",
+      "Faturamento, estoque e frota",
+    ],
+    current: true,
+    recommendation: false,
+  },
+  {
+    company: "J A Soluções Empresariais (Stilo)",
+    role: "Atendente Comercial / Suporte Técnico",
+    contract: "Teletrabalho",
+    period: "Dez 2025 — Abr 2026",
+    location: "Feira de Santana, BA",
+    description:
+      "Revendedora autorizada Casa Magalhães. Suporte técnico aos sistemas Varejo Fácil, SYSPDV, Milênio e HOST para clientes de varejo em escala nacional. Atendimento em ambiente de alta demanda com SLA rigoroso.",
+    highlights: [
+      "Varejo Fácil, SYSPDV, Milênio, HOST",
+      "Suporte a grandes redes de varejo",
+      "Ambiente de alta demanda e SLA",
+      "Revendedora autorizada Casa Magalhães",
+    ],
+    current: false,
+    recommendation: true,
+  },
+];
+---
+
+<div class="space-y-5">
+  {
+    experiences.map((exp) => (
+      <div class="relative rounded-xl border border-[var(--border)] bg-[var(--bg)] p-6 md:p-8">
+        {exp.current && (
+          <div class="absolute top-6 right-6 flex items-center gap-2">
+            <span
+              class="w-2 h-2 rounded-full bg-[#16a34a] animate-pulse"
+              aria-hidden="true"
+            />
+            <span class="text-xs text-[#16a34a] font-medium">Atual</span>
+          </div>
+        )}
+
+        <div class="mb-4 pr-20">
+          <h3 class="text-base font-semibold text-[var(--text)]">{exp.role}</h3>
+          <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
+            <span class="text-[var(--text-muted)] font-medium text-sm">
+              {exp.company}
+            </span>
+            <span class="text-[var(--border)]" aria-hidden="true">·</span>
+            <span class="text-xs text-[var(--text-muted)]">{exp.period}</span>
+            <span class="text-[var(--border)]" aria-hidden="true">·</span>
+            <span class="text-xs text-[var(--text-muted)]">{exp.contract}</span>
+          </div>
+          <p class="text-xs text-[var(--text-muted)] mt-1">{exp.location}</p>
+        </div>
+
+        <p class="text-sm text-[var(--text-muted)] leading-relaxed mb-4">
+          {exp.description}
+        </p>
+
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mb-4">
+          {exp.highlights.map((hl) => (
+            <li class="flex items-start gap-2 text-sm text-[var(--text-muted)]">
+              <span
+                class="text-[var(--border)] mt-0.5 flex-shrink-0"
+                aria-hidden="true"
+              >
+                —
+              </span>
+              {hl}
+            </li>
+          ))}
+        </ul>
+
+        {exp.recommendation && <RecommendationBadge />}
+      </div>
+    ))
+  }
+</div>

@@ -1,0 +1,283 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import TechChip from "../../components/TechChip.astro";
+import Icon from "../../components/Icon.astro";
+import { getAllProjects, formatDate } from "../../utils/projects";
+import { getCollection } from "astro:content";
+import { SITE } from "../../config";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+
+const {
+  title,
+  status,
+  stack,
+  shortDescription,
+  githubUrl,
+  liveUrl,
+  embedUrl,
+  embeddable,
+  screenshots,
+  startDate,
+  endDate,
+  coverImage,
+  privateProject,
+} = project.data;
+
+const allProjects = await getAllProjects();
+const currentIndex = allProjects.findIndex((p) => p.slug === project.slug);
+const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
+const nextProject =
+  currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
+
+const pageTitle = `${title} — ${SITE.fullName}`;
+const canonicalUrl = new URL(`/projetos/${project.slug}`, SITE.url).href;
+
+const hasGithub = githubUrl && !githubUrl.includes("{{");
+const hasLive = liveUrl && !liveUrl.includes("{{");
+const hasEmbed = embeddable && embedUrl && !embedUrl.includes("{{");
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={shortDescription}
+  canonicalUrl={canonicalUrl}
+>
+  <div class="container pt-10 pb-24">
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="mb-10">
+      <ol class="flex items-center gap-2 text-sm text-[var(--text-muted)]">
+        <li>
+          <a href="/" class="hover:text-[var(--text)] transition-colors">
+            Home
+          </a>
+        </li>
+        <li aria-hidden="true">
+          <Icon name="chevron-right" size={12} />
+        </li>
+        <li>
+          <a
+            href="/projetos"
+            class="hover:text-[var(--text)] transition-colors"
+          >
+            Projetos
+          </a>
+        </li>
+        <li aria-hidden="true">
+          <Icon name="chevron-right" size={12} />
+        </li>
+        <li
+          aria-current="page"
+          class="text-[var(--text)] font-medium truncate max-w-[200px]"
+        >
+          {title}
+        </li>
+      </ol>
+    </nav>
+
+    <div class="max-w-3xl mx-auto">
+      <!-- Header -->
+      <header class="mb-10">
+        <div class="flex flex-wrap items-center gap-3 mb-5">
+          <StatusBadge status={status} />
+          {
+            privateProject && (
+              <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border text-[var(--text-muted)] bg-[var(--bg-subtle)] border-[var(--border)]">
+                <Icon name="lock" size={11} />
+                Projeto Privado
+              </span>
+            )
+          }
+        </div>
+
+        <h1
+          class="text-display-1 font-bold text-[var(--text)] mb-5 text-balance"
+        >
+          {title}
+        </h1>
+
+        <!-- Stack -->
+        <div
+          class="flex flex-wrap gap-2 mb-5"
+          aria-label="Tecnologias utilizadas"
+        >
+          {stack.map((tech) => <TechChip tech={tech} />)}
+        </div>
+
+        <!-- Dates -->
+        <p class="text-sm text-[var(--text-muted)]">
+          {formatDate(startDate)} — {
+            endDate ? formatDate(endDate) : "em andamento"
+          }
+        </p>
+      </header>
+
+      <!-- Cover image -->
+      {
+        coverImage && (
+          <div class="mb-10 rounded-xl overflow-hidden border border-[var(--border)]">
+            <img
+              src={coverImage}
+              alt={`Capa do projeto ${title}`}
+              class="w-full object-cover aspect-video"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        )
+      }
+
+      <!-- Embed or Screenshots -->
+      {
+        hasEmbed ? (
+          <div class="mb-10">
+            <div class="rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--bg-subtle)]">
+              <div class="flex items-center gap-2 px-4 py-2.5 border-b border-[var(--border)] text-xs text-[var(--text-muted)]">
+                <Icon name="wrench" size={12} />
+                Aguarde — o servidor pode levar alguns segundos para iniciar
+                (cold start Render)
+              </div>
+              <iframe
+                src={embedUrl}
+                title={`Preview de ${title}`}
+                class="w-full h-[500px] md:h-[600px]"
+                loading="lazy"
+                sandbox="allow-scripts allow-same-origin allow-forms"
+              />
+            </div>
+          </div>
+        ) : screenshots && screenshots.length > 0 ? (
+          <div class="mb-10">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-4">
+              Screenshots
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {screenshots.map((src, i) => (
+                <div class="rounded-xl overflow-hidden border border-[var(--border)]">
+                  <img
+                    src={src}
+                    alt={`Screenshot ${i + 1} de ${title}`}
+                    class="w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div class="mb-10 rounded-xl border border-[var(--border)] border-dashed bg-[var(--bg-subtle)] p-12 text-center">
+            <div class="w-12 h-12 rounded-xl bg-[var(--border)] flex items-center justify-center mx-auto mb-4">
+              <Icon
+                name="monitor"
+                size={20}
+                class="text-[var(--text-muted)]"
+              />
+            </div>
+            <p class="text-sm text-[var(--text-muted)]">
+              {privateProject
+                ? "Screenshots não disponíveis para projetos privados."
+                : "Screenshots em breve."}
+            </p>
+          </div>
+        )
+      }
+
+      <!-- Project content -->
+      <div class="prose mb-12">
+        <Content />
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex flex-wrap gap-3 pt-8 border-t border-[var(--border)]">
+        {
+          hasGithub && (
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-primary"
+              aria-label={`Ver ${title} no GitHub (abre em nova aba)`}
+            >
+              <Icon name="github" size={16} />
+              Ver no GitHub
+            </a>
+          )
+        }
+        {
+          hasLive && (
+            <a
+              href={liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-outline"
+              aria-label={`Abrir ${title} ao vivo (abre em nova aba)`}
+            >
+              <Icon name="external-link" size={16} />
+              Abrir projeto ao vivo
+            </a>
+          )
+        }
+        <a href="/projetos" class="btn-outline ml-auto">
+          <Icon name="arrow-left" size={16} />
+          Voltar para projetos
+        </a>
+      </div>
+
+      <!-- Prev / Next navigation -->
+      {
+        (prevProject || nextProject) && (
+          <nav
+            class="mt-12 pt-8 border-t border-[var(--border)] grid grid-cols-2 gap-4"
+            aria-label="Navegação entre projetos"
+          >
+            <div>
+              {prevProject && (
+                <a
+                  href={`/projetos/${prevProject.slug}`}
+                  class="group block p-4 rounded-xl border border-[var(--border)] hover:border-[var(--accent)] hover:bg-[var(--bg-subtle)] transition-colors"
+                  aria-label={`Projeto anterior: ${prevProject.data.title}`}
+                >
+                  <p class="text-xs text-[var(--text-muted)] mb-1.5 flex items-center gap-1">
+                    <Icon name="arrow-left" size={12} />
+                    Anterior
+                  </p>
+                  <p class="text-sm font-medium text-[var(--text)] group-hover:underline underline-offset-2 line-clamp-1">
+                    {prevProject.data.title}
+                  </p>
+                </a>
+              )}
+            </div>
+            <div>
+              {nextProject && (
+                <a
+                  href={`/projetos/${nextProject.slug}`}
+                  class="group block p-4 rounded-xl border border-[var(--border)] hover:border-[var(--accent)] hover:bg-[var(--bg-subtle)] transition-colors text-right"
+                  aria-label={`Próximo projeto: ${nextProject.data.title}`}
+                >
+                  <p class="text-xs text-[var(--text-muted)] mb-1.5 flex items-center justify-end gap-1">
+                    Próximo
+                    <Icon name="arrow-right" size={12} />
+                  </p>
+                  <p class="text-sm font-medium text-[var(--text)] group-hover:underline underline-offset-2 line-clamp-1">
+                    {nextProject.data.title}
+                  </p>
+                </a>
+              )}
+            </div>
+          </nav>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>
