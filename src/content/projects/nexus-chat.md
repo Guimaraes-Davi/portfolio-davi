@@ -14,8 +14,6 @@ endDate: 2024-11-01
 tags: ["seguranca", "websockets", "real-time", "node"]
 screenshots:
   - "/images/projetos/nexus-chat/screenshot-1.png"
-  - "/images/projetos/nexus-chat/screenshot-2.png"
-  - "/images/projetos/nexus-chat/screenshot-3.png"
 ---
 
 ## Sobre o Projeto
