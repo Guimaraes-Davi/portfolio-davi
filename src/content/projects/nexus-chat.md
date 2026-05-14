@@ -5,13 +5,17 @@ shortDescription: "Chat em tempo real com criptografia ponta a ponta em conversa
 description: "Aplicação de chat em tempo real construída com Socket.io e criptografia end-to-end em conversas privadas via TweetNaCl. As chaves são geradas no cliente — nem o servidor consegue ler as mensagens."
 stack: ["Node.js", "Express", "Socket.io", "TweetNaCl", "JWT", "SQLite"]
 githubUrl: "https://github.com/Guimaraes-Davi/nexus-chat"
-liveUrl: "https://nexus-chat.onrender.com"
+liveUrl: "https://nexus-chat-uz53.onrender.com"
 embeddable: false
 featured: true
 privateProject: false
 startDate: 2024-09-01
 endDate: 2024-11-01
 tags: ["seguranca", "websockets", "real-time", "node"]
+screenshots:
+  - "/images/projetos/nexus-chat/screenshot-1.png"
+  - "/images/projetos/nexus-chat/screenshot-2.png"
+  - "/images/projetos/nexus-chat/screenshot-3.png"
 ---
 
 ## Sobre o Projeto

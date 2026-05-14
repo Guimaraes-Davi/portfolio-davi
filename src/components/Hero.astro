@@ -51,6 +51,16 @@ import Icon from "./Icon.astro";
         <a href={`mailto:${CONTACT.email}`} class="btn-outline">
           Entrar em contato
         </a>
+        <button id="cv-preview-btn" class="btn-outline flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          Ver currículo
+        </button>
       </div>
 
       <!-- Availability note -->
@@ -60,3 +70,82 @@ import Icon from "./Icon.astro";
     </div>
   </div>
 </section>
+
+<!-- Modal currículo -->
+<div
+  id="cv-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Currículo — Davi Guimarães da Costa"
+>
+  <div class="relative bg-[var(--bg)] border border-[var(--border)] rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl">
+    <!-- Header do modal -->
+    <div class="flex items-center justify-between px-6 py-4 border-b border-[var(--border)] flex-shrink-0">
+      <p class="text-sm font-medium text-[var(--text)]">Currículo — Davi Guimarães da Costa</p>
+      <div class="flex items-center gap-3">
+        <a
+          href="/Curriculo_Davi_Guimaraes.pdf"
+          download
+          class="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--text)] transition-colors"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Baixar PDF
+        </a>
+        <button
+          id="cv-modal-close"
+          class="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+          aria-label="Fechar"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <!-- PDF -->
+    <div class="flex-1 overflow-hidden p-2">
+      <iframe
+        id="cv-iframe"
+        src=""
+        class="w-full rounded-lg"
+        style="height: 70vh;"
+        title="Currículo Davi Guimarães da Costa"
+      ></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  const btn = document.getElementById("cv-preview-btn")!;
+  const modal = document.getElementById("cv-modal")!;
+  const close = document.getElementById("cv-modal-close")!;
+  const iframe = document.getElementById("cv-iframe") as HTMLIFrameElement;
+
+  btn.addEventListener("click", () => {
+    iframe.src = "/Curriculo_Davi_Guimaraes.pdf";
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    document.body.style.overflow = "hidden";
+  });
+
+  function closeModal() {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    iframe.src = "";
+    document.body.style.overflow = "";
+  }
+
+  close.addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+</script>
