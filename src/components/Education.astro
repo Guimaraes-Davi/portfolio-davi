@@ -9,6 +9,8 @@ const education = [
     status: "em-andamento" as const,
     statusLabel: "Em andamento",
     highlights: ["Engenharia de software aplicada", "Metodologias ágeis", "Arquitetura de sistemas", "Tópicos de segurança"],
+    certificate: null,
+    certificate: { file: "/certificados/unifan.pdf", type: "pdf", label: "Ver Atestado de Matrícula" },
   },
   {
     institution: "Faculdade UNIFAN",
@@ -19,6 +21,7 @@ const education = [
     status: "futuro" as const,
     statusLabel: "Em breve",
     highlights: ["Criptografia e protocolos de segurança", "Segurança em aplicações web", "LGPD e conformidade", "Análise de vulnerabilidades"],
+    certificate: null,
   },
   {
     institution: "Universidade Pitágoras Unopar Anhanguera",
@@ -29,6 +32,7 @@ const education = [
     status: "finalizado" as const,
     statusLabel: "Concluído",
     highlights: ["Desenvolvimento back-end com Python e Node.js", "Banco de dados relacional e SQL", "APIs REST e arquitetura de software", "Segurança em aplicações"],
+    certificate: { file: "/certificados/anhanguera.pdf", type: "pdf", label: "Ver diploma" },
   },
   {
     institution: "SENAI Feira de Santana",
@@ -39,13 +43,29 @@ const education = [
     status: "finalizado" as const,
     statusLabel: "Concluído",
     highlights: ["Lógica de programação e algoritmos", "Desenvolvimento web", "Banco de dados", "Projetos práticos de software"],
+    certificate: { file: "/certificados/senai.pdf", type: "pdf", label: "Ver diploma" },
   },
 ];
 
 const certifications = [
-  { name: "Inglês Intermediário", institution: "Ópera Idiomas", period: "2023 — 2025" },
-  { name: "Algoritmos e Programação em Python", institution: "UEFS (EAD)", period: "2023 · 180h" },
-  { name: "Kid Coding — Lógica de Programação", institution: "Códigos Kids", period: "2022 · 18h" },
+  {
+    name: "Inglês — CEFR B2",
+    institution: "Ópera Idiomas",
+    period: "2023 — 2025 · 180h",
+    certificate: { file: "/certificados/ingles.pdf", type: "pdf", label: "Ver certificado" },
+  },
+  {
+    name: "Algoritmos e Programação em Python",
+    institution: "UEFS (EAD)",
+    period: "2023 · 180h",
+    certificate: { file: "/certificados/python-uefs.pdf", type: "pdf", label: "Ver certificado" },
+  },
+  {
+    name: "Kid Coding — Lógica de Programação",
+    institution: "Códigos Kids",
+    period: "2022 · 18h",
+    certificate: { file: "/certificados/codigokid.pdf", type: "pdf", label: "Ver certificado" },
+  },
 ];
 
 const statusConfig = {
@@ -75,18 +95,30 @@ const statusConfig = {
               </div>
               <p class="text-xs text-[var(--text-muted)] mt-0.5">{edu.detail}</p>
             </div>
-            <span
-              class:list={[
-                "inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border flex-shrink-0",
-                color,
-              ]}
-            >
+            <div class="flex items-center gap-2 flex-shrink-0">
+              {edu.certificate && (
+                <button
+                  class="cert-btn text-xs font-medium px-2.5 py-1 rounded-full border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--text)] transition-colors"
+                  data-file={edu.certificate.file}
+                  data-type={edu.certificate.type}
+                  data-label={edu.degree}
+                >
+                  {edu.certificate.label}
+                </button>
+              )}
               <span
-                class:list={["w-1.5 h-1.5 rounded-full", dot]}
-                aria-hidden="true"
-              />
-              {edu.statusLabel}
-            </span>
+                class:list={[
+                  "inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border",
+                  color,
+                ]}
+              >
+                <span
+                  class:list={["w-1.5 h-1.5 rounded-full", dot]}
+                  aria-hidden="true"
+                />
+                {edu.statusLabel}
+              </span>
+            </div>
           </div>
 
           <ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
@@ -118,12 +150,108 @@ const statusConfig = {
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
     {
       certifications.map((cert) => (
-        <div class="rounded-lg border border-[var(--border)] p-4">
-          <p class="text-sm font-medium text-[var(--text)] mb-1">{cert.name}</p>
-          <p class="text-xs text-[var(--text-muted)]">{cert.institution}</p>
-          <p class="text-xs text-[var(--text-muted)]">{cert.period}</p>
+        <div class="rounded-lg border border-[var(--border)] p-4 flex flex-col justify-between gap-3">
+          <div>
+            <p class="text-sm font-medium text-[var(--text)] mb-1">{cert.name}</p>
+            <p class="text-xs text-[var(--text-muted)]">{cert.institution}</p>
+            <p class="text-xs text-[var(--text-muted)]">{cert.period}</p>
+          </div>
+          {cert.certificate && (
+            <button
+              class="cert-btn self-start text-xs font-medium px-2.5 py-1 rounded-full border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--text)] transition-colors"
+              data-file={cert.certificate.file}
+              data-type={cert.certificate.type}
+              data-label={cert.name}
+            >
+              {cert.certificate.label}
+            </button>
+          )}
         </div>
       ))
     }
   </div>
 </div>
+
+<!-- Modal -->
+<div
+  id="cert-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="cert-modal-title"
+>
+  <div class="relative bg-[var(--bg)] border border-[var(--border)] rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-6 py-4 border-b border-[var(--border)] flex-shrink-0">
+      <p id="cert-modal-title" class="text-sm font-medium text-[var(--text)]"></p>
+      <button
+        id="cert-modal-close"
+        class="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+        aria-label="Fechar"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+    <!-- Content -->
+    <div class="flex-1 overflow-auto p-2">
+      <iframe id="cert-iframe" class="w-full rounded-lg hidden" style="height: 70vh;" title="Certificado"></iframe>
+      <img id="cert-img" class="w-full rounded-lg hidden object-contain" style="max-height: 70vh;" alt="Certificado" />
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById("cert-modal")!;
+  const modalTitle = document.getElementById("cert-modal-title")!;
+  const modalClose = document.getElementById("cert-modal-close")!;
+  const certIframe = document.getElementById("cert-iframe") as HTMLIFrameElement;
+  const certImg = document.getElementById("cert-img") as HTMLImageElement;
+
+  function openModal(file: string, type: string, label: string) {
+    modalTitle.textContent = label;
+    certIframe.classList.add("hidden");
+    certImg.classList.add("hidden");
+
+    if (type === "image") {
+      certImg.src = file;
+      certImg.classList.remove("hidden");
+    } else {
+      certIframe.src = file;
+      certIframe.classList.remove("hidden");
+    }
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    certIframe.src = "";
+    certImg.src = "";
+    document.body.style.overflow = "";
+  }
+
+  document.querySelectorAll(".cert-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const file = (btn as HTMLElement).dataset.file!;
+      const type = (btn as HTMLElement).dataset.type!;
+      const label = (btn as HTMLElement).dataset.label!;
+      openModal(file, type, label);
+    });
+  });
+
+  modalClose.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+</script>
