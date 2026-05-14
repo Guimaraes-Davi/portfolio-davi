@@ -14,5 +14,6 @@ export default defineConfig({
   compressHTML: true,
   build: {
     inlineStylesheets: "auto",
+    charset: 'utf8'
   },
 });
