@@ -2,64 +2,62 @@
 title: "Hollow Reign"
 status: "futuro"
 slug: "hollow-reign"
-shortDescription: "Jogo tower defense com gestão de reino em mundo pós-apocalíptico infinito, em pixel art 2D. Reimaginação de Kingdom Two Crowns com sistemas mais profundos."
-description: "Jogo indie 2D em pixel art que combina tower defense com gestão de reino em mundo pós-apocalíptico infinito. Heróis recrutáveis com morte permanente, economia de recursos físicos e expansão lateral procedural. Inspirado em Kingdom Two Crowns, reimaginado com sistemas mais profundos."
+shortDescription: "Projeto de jogo indie 2D explorando sistemas modulares em Godot 4, com foco em arquitetura escalável e iteração rápida."
+description: "Projeto de game development em fase de design e pré-produção. Tower defense 2D em pixel art construído sobre Godot 4 com GDScript, explorando arquitetura modular baseada em nodes independentes, Resource files do Godot para dados estáticos e autoloads para sistemas globais (recursos, ciclo dia/noite, IA)."
 stack: ["Godot 4", "GDScript", "Aseprite", "Git"]
 embeddable: false
 privateProject: true
 featured: true
 startDate: 2026-01-01
-tags: ["game-dev", "godot", "indie", "pixel-art"]
+tags: ["game-dev", "godot", "indie", "arquitetura"]
 ---
 
 > **Nome provisório.** Hollow Reign é o nome de trabalho atual e pode mudar antes do lançamento.
 
-Jogo indie 2D em pixel art que combina tower defense com gestão de reino em um mundo pós-apocalíptico infinito dominado por humanos infectados — os Vazios. Inspirado em Kingdom Two Crowns, reimaginado com sobreviventes especializados, economia de recursos físicos e biomas variados.
+Projeto de game development em fase de design e pré-produção. Tower defense 2D em pixel art construído sobre Godot 4, focado em arquitetura modular, escopo controlado e iteração rápida.
 
-## Premissa
+## Stack técnica
 
-A civilização caiu. Os Vazios — humanos infectados por uma mutação biológica — dominam o que restou do mundo. Você é um dos últimos líderes capazes de reunir sobreviventes, construir refúgios fortificados e expandir um reino que talvez sobreviva à próxima noite. Cada noite traz hordas mais perigosas. Cada dia decide se sua coroa sobrevive.
+- **Engine:** Godot 4
+- **Linguagem:** GDScript com type hints obrigatórios
+- **Arte:** Pixel art autoral em Aseprite
+- **Versionamento:** Git com repositório privado durante desenvolvimento
+- **Dados estáticos:** Resource files do Godot (ItemData, EnemyData, HeroData)
+- **Sistemas globais:** Autoloads independentes por domínio (recursos, ciclo dia/noite, IA, save/load)
 
-## Mecânicas centrais
+## Princípios de arquitetura
 
-**Núcleo Kingdom-style** — ciclo dia/noite, expansão lateral horizontal, perda da coroa = game over.
+**Sistemas modulares.** Cada herói, inimigo e estrutura é um node independente. Adicionar conteúdo novo não pode quebrar o existente. Acoplamento mínimo via sinais (signals) do Godot em vez de referências diretas.
 
-**Heróis recrutáveis** — sobreviventes com especialização única, skill tree própria e morte permanente:
-- Engenheiro — constrói torres e estruturas exclusivas
-- Caçador — ataques precisos à distância
-- Médico — cura aliados em combate
+**Dados separados da lógica.** Resource files contêm os atributos (vida, dano, custo). Scripts contêm o comportamento. Isso permite balanceamento e adição de conteúdo sem tocar no código.
 
-**Economia de recursos físicos** — sem moedas mágicas. Madeira, pedra e materiais raros são transportados manualmente ou por sobreviventes recrutados.
+**Escopo é sagrado.** Cada feature nova precisa caber no MVP definido ou ir para o roadmap. Sem feature creep — o MVP é fechado e validado antes de qualquer expansão.
 
-**Sobreviventes limitados** — capacidade de população depende do nível da base. Cada upgrade libera novos slots e estruturas mais avançadas.
+**Iteração rápida.** Mecânica nova → protótipo feio → testar diversão → polir depois. Otimização e arte final só vêm após validação de gameplay.
 
-**Mundo sem limites** — exploração horizontal procedural com biomas variados.
+## Padrões de código
 
-## Inimigos (Vazios)
+- GDScript com type hints sempre (`var nome: String`)
+- Sinais em snake_case (`signal heroi_morto`)
+- Constantes em UPPER_SNAKE_CASE
+- Resource files para dados estáticos
+- Cada sistema (recursos, dia/noite, IA) isolado em autoload próprio
+- Documentação técnica em português, com CLAUDE.md mantendo o contexto entre sessões
 
-- Vagantes — zumbis comuns, lentos
-- Frenéticos — corredores noturnos
-- Brutos — quebram muralhas
-- Cuspidores — atacam à distância com ácido
-- Colmeias — geram outros zumbis
-- Vazios Antigos — bosses raros de cada bioma
+## Estrutura do projeto
+hollow-reign/
+├── scenes/        nodes principais (player, heróis, inimigos, prédios, mundo)
+├── scripts/
+│   ├── systems/   sistemas globais
+│   ├── ai/        lógica de inimigos e NPCs
+│   └── utils/
+├── assets/        sprites, áudio, UI
+└── resources/     Resource files do Godot
 
-## Filosofia do projeto
+## Escopo do MVP
 
-Escopo enxuto e iteração rápida. Sistemas modulares onde cada herói, inimigo e estrutura é um node independente. Pixel art autoral, sem assets comprados.
+MVP fechado em 1 bioma jogável, 3 heróis com skill trees, ciclo dia/noite funcional, sistema de recursos físicos, save/load e 4-5 tipos de inimigos. Roadmap pós-MVP documentado mas isolado do desenvolvimento atual para não inflar a entrega inicial.
 
-## MVP planejado
+## Status
 
-1 bioma jogável, 3 heróis recrutáveis, locomoção a pé, sistema de recursos básico, ciclo dia/noite funcional e save/load.
-
-## Roadmap pós-MVP
-
-Biomas adicionais, montarias, veículos, heróis avançados, bosses únicos por bioma e comerciantes nômades.
-
-## Status e modelo
-
-Projeto futuro em fase de design e pré-produção. Será desenvolvido antes do DTR — que depende de hardware mais robusto. Por ser um projeto comercial real, o código permanecerá fechado. A demo gratuita pode ser disponibilizada como código aberto a depender do estágio de desenvolvimento.
-
-## Inspirações
-
-Kingdom Two Crowns, State of Decay, They Are Billions, This War of Mine.
+Projeto comercial em pré-produção. Por se tratar de produto futuro com intenção de lançamento, o código permanecerá fechado. Demo gratuita poderá ser disponibilizada como código aberto a depender do estágio de desenvolvimento.
