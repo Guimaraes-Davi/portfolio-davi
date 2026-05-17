@@ -2,7 +2,7 @@
 title: "Nexus Chat"
 status: "finalizado"
 shortDescription: "Chat em tempo real com criptografia ponta a ponta em conversas privadas usando TweetNaCl."
-description: "Jogo indie 2D em pixel art que combina tower defense com gestão de reino em mundo pós-apocalíptico infinito. Heróis recrutáveis com morte permanente, economia de recursos físicos e expansão lateral procedural. Inspirado em Kingdom Two Crowns, reimaginado com sistemas mais profundos."
+description: "Nexus Chat implementa criptografia end-to-end real em conversas privadas — as chaves são geradas no navegador do usuário e nem o servidor tem acesso ao conteúdo das mensagens. O servidor atua apenas como retransmissor de bytes cifrados."
 stack: ["Node.js", "Express", "Socket.io", "TweetNaCl", "JWT", "SQLite"]
 githubUrl: "https://github.com/Guimaraes-Davi/nexus-chat"
 liveUrl: "https://nexus-chat-uz53.onrender.com"

@@ -1,8 +1,9 @@
 ---
 title: "Hollow Reign"
-slug: "hollow-reign"
 status: "futuro"
-shortDescription: "Tower defense com gestão de reino em mundo pós-apocalíptico infinito, em pixel art 2D. Reimaginação de Kingdom Two Crowns com sistemas mais profundos."
+slug: "hollow-reign"
+shortDescription: "Jogo tower defense com gestão de reino em mundo pós-apocalíptico infinito, em pixel art 2D. Reimaginação de Kingdom Two Crowns com sistemas mais profundos."
+description: "Jogo indie 2D em pixel art que combina tower defense com gestão de reino em mundo pós-apocalíptico infinito. Heróis recrutáveis com morte permanente, economia de recursos físicos e expansão lateral procedural. Inspirado em Kingdom Two Crowns, reimaginado com sistemas mais profundos."
 stack: ["Godot 4", "GDScript", "Aseprite", "Git"]
 embeddable: false
 privateProject: true
