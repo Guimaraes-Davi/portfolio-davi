@@ -19,6 +19,9 @@ const projects = defineCollection({
     startDate: z.coerce.date(),
     endDate: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
+    files: z.object({
+      encoding: z.literal("utf8")
+    }).optional()
   }),
 });
 

@@ -29,11 +29,11 @@ A civilização caiu. Os Vazios — humanos infectados por uma mutação biológ
 - Caçador — ataques precisos à distância
 - Médico — cura aliados em combate
 
-**Economia de recursos físicos** — sem moedas mágicas. Madeira, pedra e materiais raros são transportados manualmente ou por sobreviventes recrutados. Moedas existem mas funcionam como recurso transportável, usado em locais específicos.
+**Economia de recursos físicos** — sem moedas mágicas. Madeira, pedra e materiais raros são transportados manualmente ou por sobreviventes recrutados.
 
-**Sobreviventes limitados** — capacidade de população depende do nível da base. Cada upgrade da base libera novos slots e estruturas mais avançadas.
+**Sobreviventes limitados** — capacidade de população depende do nível da base. Cada upgrade libera novos slots e estruturas mais avançadas.
 
-**Mundo sem limites** — exploração horizontal procedural com biomas variados. Decisão estratégica permanente: quanto maior o reino, mais difícil defender.
+**Mundo sem limites** — exploração horizontal procedural com biomas variados.
 
 ## Inimigos (Vazios)
 
@@ -46,22 +46,20 @@ A civilização caiu. Os Vazios — humanos infectados por uma mutação biológ
 
 ## Filosofia do projeto
 
-Escopo enxuto e iteração rápida. Cada feature nova precisa caber no MVP ou ir pro roadmap — nada de feature creep. Sistemas modulares onde cada herói, inimigo e estrutura é um node independente. Pixel art autoral, sem assets comprados.
+Escopo enxuto e iteração rápida. Sistemas modulares onde cada herói, inimigo e estrutura é um node independente. Pixel art autoral, sem assets comprados.
 
 ## MVP planejado
 
-1 bioma jogável (floresta morta), 3 heróis recrutáveis, locomoção a pé, sistema de recursos físicos básico, 4-5 tipos de inimigos, ciclo dia/noite funcional e save/load do progresso.
+1 bioma jogável, 3 heróis recrutáveis, locomoção a pé, sistema de recursos básico, ciclo dia/noite funcional e save/load.
 
 ## Roadmap pós-MVP
 
-Biomas adicionais (cidades caídas, zonas radioativas, pântanos), montarias e veículos, heróis avançados (Necromante, Forjador), fast travel aéreo, sistema de fazendas e animais, bosses únicos por bioma e comerciantes nômades.
+Biomas adicionais, montarias, veículos, heróis avançados, bosses únicos por bioma e comerciantes nômades.
 
 ## Status e modelo
 
-Projeto futuro em fase de design e pré-produção. Será desenvolvido antes do DTR — que depende de hardware mais robusto. Quando o hardware permitir, ambos seguirão em paralelo.
-
-Por se tratar de um projeto comercial real (não acadêmico ou de portfólio), o código-fonte do jogo principal permanecerá fechado. A demo gratuita pode ser disponibilizada como código aberto a depender do estágio de desenvolvimento.
+Projeto futuro em fase de design e pré-produção. Será desenvolvido antes do DTR — que depende de hardware mais robusto. Por ser um projeto comercial real, o código permanecerá fechado. A demo gratuita pode ser disponibilizada como código aberto a depender do estágio de desenvolvimento.
 
 ## Inspirações
 
-Kingdom Two Crowns (base de gameplay), State of Decay (gestão de sobreviventes), They Are Billions (densidade de hordas), This War of Mine (peso narrativo da sobrevivência).
+Kingdom Two Crowns, State of Decay, They Are Billions, This War of Mine.
