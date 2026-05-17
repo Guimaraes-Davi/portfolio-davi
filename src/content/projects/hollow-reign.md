@@ -12,7 +12,7 @@ startDate: 2026-01-01
 tags: ["game-dev", "godot", "indie", "arquitetura"]
 ---
 
-> **Nome provisório.** Hollow Reign é o nome de trabalho atual e pode mudar antes do lançamento.
+> **Nome provisório.** Hollow Reign é o nome de trabalho atual e pode mudar durante o desenvolvimento.
 
 Projeto de game development em fase de design e pré-produção. Tower defense 2D em pixel art construído sobre Godot 4, focado em arquitetura modular, escopo controlado e iteração rápida.
 
@@ -44,20 +44,10 @@ Projeto de game development em fase de design e pré-produção. Tower defense 2
 - Cada sistema (recursos, dia/noite, IA) isolado em autoload próprio
 - Documentação técnica em português, com CLAUDE.md mantendo o contexto entre sessões
 
-## Estrutura do projeto
-hollow-reign/
-├── scenes/        nodes principais (player, heróis, inimigos, prédios, mundo)
-├── scripts/
-│   ├── systems/   sistemas globais
-│   ├── ai/        lógica de inimigos e NPCs
-│   └── utils/
-├── assets/        sprites, áudio, UI
-└── resources/     Resource files do Godot
-
 ## Escopo do MVP
 
 MVP fechado em 1 bioma jogável, 3 heróis com skill trees, ciclo dia/noite funcional, sistema de recursos físicos, save/load e 4-5 tipos de inimigos. Roadmap pós-MVP documentado mas isolado do desenvolvimento atual para não inflar a entrega inicial.
 
 ## Status
 
-Projeto comercial em pré-produção. Por se tratar de produto futuro com intenção de lançamento, o código permanecerá fechado. Demo gratuita poderá ser disponibilizada como código aberto a depender do estágio de desenvolvimento.
+Projeto comercial em pré-produção. Por se tratar de produto futuro com intenção de lançamento, o código permanecerá fechado. Demo gratuita será disponibilizada como código aberto a depender do estágio de desenvolvimento.
