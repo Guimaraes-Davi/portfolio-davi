@@ -5,7 +5,7 @@ interface Props {
 const { slug } = Astro.props;
 ---
 
-{/* ============ POKÉDEX ============ */}
+{/* ============ POKÉDEX — 45 pokémons, sem timidez ============ */}
 {slug === "pokedex" && (
   <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true" id="pokemon-bg"></div>
 )}
@@ -16,41 +16,50 @@ const { slug } = Astro.props;
     var container = document.getElementById("pokemon-bg");
     if (!container) return;
 
-    // 20 Pokémons espalhados pela tela
-    var ids = [1,4,7,25,39,52,94,143,131,54,63,129,58,92,79,43,147,23,74,50];
-    var positions = [
-      [3,3],[3,50],[3,88],[15,20],[15,72],
-      [28,8],[28,60],[28,92],[42,35],[42,80],
-      [55,5],[55,48],[55,85],[68,18],[68,65],
-      [78,30],[78,78],[88,10],[88,52],[88,88]
+    var ids = [
+      1,2,3,4,5,6,7,8,9,25,26,39,52,53,54,63,79,92,93,94,
+      129,130,131,143,147,148,149,23,74,43,58,59,66,67,68,
+      19,20,27,28,35,36,37,38,50,51
     ];
 
+    var positions = [];
+    for (var row = 0; row < 5; row++) {
+      for (var col = 0; col < 9; col++) {
+        positions.push([
+          5 + row * 22 + Math.random() * 8,
+          2 + col * 11 + Math.random() * 4
+        ]);
+      }
+    }
+
     ids.forEach(function (id, i) {
+      if (i >= positions.length) return;
       var img = document.createElement("img");
       img.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + id + ".png";
       img.alt = "";
-      img.width = 72;
-      img.height = 72;
+      img.width = 88;
+      img.height = 88;
       img.style.cssText = [
         "position:absolute",
         "top:" + positions[i][0] + "%",
         "left:" + positions[i][1] + "%",
-        "opacity:0.35",
+        "opacity:0.55",
         "image-rendering:pixelated",
-        "transition:opacity 0.5s"
+        "filter:drop-shadow(0 0 6px rgba(0,0,0,0.15))"
       ].join(";");
       container.appendChild(img);
 
       img.onload = function () {
         if (typeof gsap === "undefined") return;
         gsap.to(img, {
-          y: gsap.utils.random(-35, 35),
-          x: gsap.utils.random(-18, 18),
-          rotation: gsap.utils.random(-12, 12),
-          duration: gsap.utils.random(4, 10),
+          y: gsap.utils.random(-45, 45),
+          x: gsap.utils.random(-22, 22),
+          rotation: gsap.utils.random(-15, 15),
+          duration: gsap.utils.random(3, 8),
           ease: "sine.inOut",
           yoyo: true,
-          repeat: -1
+          repeat: -1,
+          delay: Math.random() * 2
         });
       };
     });
@@ -58,7 +67,7 @@ const { slug } = Astro.props;
   </script>
 )}
 
-{/* ============ DEAD DROP ============ */}
+{/* ============ DEAD DROP — mantém ============ */}
 {slug === "dead-drop" && (
   <canvas id="matrix-canvas" class="fixed inset-0 pointer-events-none z-0" style="width:100%;height:100%;" aria-hidden="true"></canvas>
 )}
@@ -69,29 +78,17 @@ const { slug } = Astro.props;
     var canvas = document.getElementById("matrix-canvas");
     if (!canvas) return;
     var ctx = canvas.getContext("2d");
-
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
     var cols = Math.floor(canvas.width / 20);
     var drops = Array(cols).fill(1);
     var chars = "アイウエオカキクケコ01BCDEF$#@!%&*<>{}[]".split("");
-
-    function isDark() {
-      return document.documentElement.classList.contains("dark");
-    }
-
+    function isDark() { return document.documentElement.classList.contains("dark"); }
     function draw() {
-      // Apaga com a cor de fundo correta para cada tema
-      if (isDark()) {
-        ctx.fillStyle = "rgba(10,10,10,0.04)";
-      } else {
-        ctx.fillStyle = "rgba(255,255,255,0.04)";
-      }
+      ctx.fillStyle = isDark() ? "rgba(10,10,10,0.04)" : "rgba(255,255,255,0.04)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "rgba(127,29,29,0.55)";
       ctx.font = "12px monospace";
-
       drops.forEach(function (y, i) {
         var char = chars[Math.floor(Math.random() * chars.length)];
         ctx.fillText(char, i * 20, y * 20);
@@ -99,9 +96,7 @@ const { slug } = Astro.props;
         drops[i]++;
       });
     }
-
     setInterval(draw, 80);
-
     window.addEventListener("resize", function () {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -110,7 +105,7 @@ const { slug } = Astro.props;
   </script>
 )}
 
-{/* ============ NEXUS CHAT ============ */}
+{/* ============ NEXUS CHAT — 16 bolhas expressivas ============ */}
 {slug === "nexus-chat" && (
   <div id="chat-bg" class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true"></div>
 )}
@@ -118,21 +113,28 @@ const { slug } = Astro.props;
   <script is:inline>
   (function () {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
     function init() {
       if (typeof gsap === "undefined") { setTimeout(init, 100); return; }
       var container = document.getElementById("chat-bg");
       if (!container) return;
 
       var bubbles = [
-        { w: 90,  h: 36, top: "8%",  left: "6%",  symbol: "···" },
-        { w: 120, h: 36, top: "14%", left: "72%", symbol: "···" },
-        { w: 70,  h: 36, top: "28%", left: "4%",  symbol: "···" },
-        { w: 100, h: 36, top: "35%", left: "80%", symbol: "···" },
-        { w: 80,  h: 36, top: "50%", left: "10%", symbol: "···" },
-        { w: 110, h: 36, top: "58%", left: "70%", symbol: "···" },
-        { w: 90,  h: 36, top: "72%", left: "5%",  symbol: "···" },
-        { w: 75,  h: 36, top: "78%", left: "78%", symbol: "···" },
+        { w:140, h:48, top:"5%",  left:"4%",  },
+        { w:180, h:48, top:"8%",  left:"68%", },
+        { w:110, h:44, top:"18%", left:"22%", },
+        { w:160, h:48, top:"16%", left:"82%", },
+        { w:130, h:44, top:"30%", left:"2%",  },
+        { w:90,  h:40, top:"28%", left:"55%", },
+        { w:170, h:48, top:"38%", left:"76%", },
+        { w:120, h:44, top:"48%", left:"15%", },
+        { w:150, h:48, top:"52%", left:"62%", },
+        { w:100, h:40, top:"60%", left:"3%",  },
+        { w:140, h:44, top:"65%", left:"40%", },
+        { w:180, h:48, top:"62%", left:"80%", },
+        { w:110, h:44, top:"75%", left:"8%",  },
+        { w:130, h:44, top:"78%", left:"58%", },
+        { w:90,  h:40, top:"85%", left:"28%", },
+        { w:160, h:48, top:"88%", left:"72%", },
       ];
 
       bubbles.forEach(function (b, i) {
@@ -143,38 +145,38 @@ const { slug } = Astro.props;
           "left:" + b.left,
           "width:" + b.w + "px",
           "height:" + b.h + "px",
-          "border-radius:18px",
-          "border:1px solid rgba(128,128,128,0.18)",
+          "border-radius:24px",
+          "border:1.5px solid rgba(128,128,128,0.28)",
           "display:flex",
           "align-items:center",
           "justify-content:center",
-          "font-size:15px",
-          "color:rgba(128,128,128,0.18)",
+          "font-size:18px",
+          "color:rgba(128,128,128,0.28)",
           "font-family:monospace",
-          "letter-spacing:5px"
+          "letter-spacing:6px",
+          "background:rgba(128,128,128,0.04)"
         ].join(";");
-        el.textContent = b.symbol;
+        el.textContent = "···";
         container.appendChild(el);
 
         gsap.to(el, {
-          y: gsap.utils.random(-25, 25),
-          x: gsap.utils.random(-12, 12),
-          opacity: gsap.utils.random(0.4, 0.9),
-          duration: gsap.utils.random(5, 11),
+          y: gsap.utils.random(-35, 35),
+          x: gsap.utils.random(-18, 18),
+          opacity: gsap.utils.random(0.5, 1.0),
+          duration: gsap.utils.random(4, 9),
           ease: "sine.inOut",
           yoyo: true,
           repeat: -1,
-          delay: i * 0.35
+          delay: i * 0.25
         });
       });
     }
-
     init();
   })();
   </script>
 )}
 
-{/* ============ LEITOR XML ============ */}
+{/* ============ LEITOR XML — tags verdes digitando ============ */}
 {(slug === "leitor-xml" || slug === "fiscal-xml-reader") && (
   <div id="xml-bg" class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true"></div>
 )}
@@ -182,23 +184,26 @@ const { slug } = Astro.props;
   <script is:inline>
   (function () {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
     function init() {
       if (typeof gsap === "undefined") { setTimeout(init, 100); return; }
       var container = document.getElementById("xml-bg");
       if (!container) return;
 
       var tags = [
-        "<nfeProc>", "<infNFe>", "<emit>", "<dest>",
-        "<ICMSTot>", "<det>", "</nfeProc>", "<transp>",
-        "<cobr>", "</infNFe>", "<ide>", "<total>",
-        "<vNF>", "<CNPJ>", "<xNome>"
+        "<nfeProc>","<infNFe>","<emit>","<dest>","<ICMSTot>",
+        "<det>","</nfeProc>","<transp>","<cobr>","</infNFe>",
+        "<ide>","<total>","<vNF>","<CNPJ>","<xNome>",
+        '<?xml version="1.0"?>',"<NFe xmlns>","<infCte>","<MDFe>","</emit>"
       ];
       var positions = [
-        [6,4],[12,68],[22,14],[32,78],[44,6],[52,62],
-        [63,18],[70,76],[80,8],[86,58],[18,42],[58,38],
-        [36,25],[74,45],[90,72]
+        [4,2],[8,60],[14,28],[20,72],[26,8],[32,50],
+        [38,78],[44,18],[50,64],[56,4],[62,42],[68,80],
+        [74,22],[80,55],[86,10],[10,38],[22,85],[48,35],
+        [60,18],[76,68]
       ];
+
+      var isDark = document.documentElement.classList.contains("dark");
+      var color = isDark ? "rgba(74,222,128,0.45)" : "rgba(22,163,74,0.45)";
 
       tags.forEach(function (tag, i) {
         var el = document.createElement("span");
@@ -207,17 +212,17 @@ const { slug } = Astro.props;
           "top:" + positions[i][0] + "%",
           "left:" + positions[i][1] + "%",
           "font-family:monospace",
-          "font-size:11px",
-          "color:rgba(128,128,128,0.12)",
+          "font-size:13px",
+          "font-weight:600",
           "white-space:nowrap",
-          "opacity:0.12"
+          "opacity:0",
+          "color:" + color
         ].join(";");
-        el.textContent = "";
         container.appendChild(el);
 
-        var delay = i * 0.7;
-
         function animateTag() {
+          el.textContent = "";
+          el.style.opacity = "1";
           var current = 0;
           var interval = setInterval(function () {
             el.textContent = tag.substring(0, current);
@@ -226,92 +231,127 @@ const { slug } = Astro.props;
               clearInterval(interval);
               setTimeout(function () {
                 gsap.to(el, {
-                  opacity: 0, duration: 0.8,
+                  opacity: 0, duration: 1.2,
                   onComplete: function () {
-                    el.textContent = "";
-                    el.style.opacity = "0.12";
-                    setTimeout(animateTag, gsap.utils.random(1000, 3000));
+                    setTimeout(animateTag, gsap.utils.random(800, 2500));
                   }
                 });
-              }, 1800);
+              }, 2000);
             }
-          }, 80);
+          }, 65);
         }
 
-        setTimeout(animateTag, delay * 1000);
+        setTimeout(animateTag, i * 600);
       });
     }
-
     init();
   })();
   </script>
 )}
 
-{/* ============ PRYA ============ */}
+{/* ============ PRYA — dois terminais visíveis ============ */}
 {slug === "prya" && (
-  <div
-    id="terminal-bg"
-    class="fixed bottom-8 left-8 pointer-events-none z-0"
-    aria-hidden="true"
-    style="font-family:monospace;font-size:11px;color:rgba(128,128,128,0.15);line-height:1.7;max-width:300px;"
-  ></div>
+  <>
+    <div id="terminal-left" class="fixed bottom-6 left-6 pointer-events-none z-0" aria-hidden="true"
+      style="font-family:monospace;font-size:12px;line-height:1.8;max-width:320px;"></div>
+    <div id="terminal-right" class="fixed top-24 right-6 pointer-events-none z-0" aria-hidden="true"
+      style="font-family:monospace;font-size:12px;line-height:1.8;max-width:300px;text-align:right;"></div>
+  </>
 )}
 {slug === "prya" && (
   <script is:inline>
   (function () {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
     function init() {
       if (typeof gsap === "undefined") { setTimeout(init, 100); return; }
-      var container = document.getElementById("terminal-bg");
-      if (!container) return;
 
-      var lines = [
+      var isDark = document.documentElement.classList.contains("dark");
+      var color = isDark ? "rgba(134,239,172,0.55)" : "rgba(22,163,74,0.55)";
+      var colorDim = isDark ? "rgba(134,239,172,0.30)" : "rgba(22,163,74,0.30)";
+
+      var leftEl = document.getElementById("terminal-left");
+      var rightEl = document.getElementById("terminal-right");
+      if (!leftEl || !rightEl) return;
+
+      leftEl.style.color = color;
+      rightEl.style.color = colorDim;
+
+      var leftLines = [
         "$ python prya.py",
         "> Loading model...",
-        "> deepseek-coder-v2 ready",
+        "> deepseek-coder-v2:16b",
+        "> Context window: 128k",
         "> Session started",
-        ">>> analyze(code)",
-        "  scanning tokens...",
+        ">>> analyze(snippet)",
+        "  [████████░░] 80%",
         "  complexity: O(n log n)",
+        "  coupling: low",
         "  issues found: 0",
-        ">>> generate_function()",
-        "  streaming response...",
-        "  def process(data):",
-        "    return result",
-        "> Memory: 20 msgs",
-        "> Context preserved",
+        ">>> generate('sort function')",
+        "  streaming...",
+        "  def merge_sort(arr):",
+        "    if len(arr) <= 1:",
+        "      return arr",
+        "    mid = len(arr) // 2",
+        "    left = merge_sort(arr[:mid])",
+        "    right = merge_sort(arr[mid:])",
+        "    return merge(left, right)",
+        "> Memory: 20/20 msgs",
+        "> Session: 00:14:32",
         "$ _"
       ];
 
-      var i = 0;
-      function addLine() {
-        if (i >= lines.length) {
-          setTimeout(function () {
-            container.innerHTML = "";
-            i = 0;
-            addLine();
-          }, 3000);
-          return;
+      var rightLines = [
+        "model: deepseek-coder-v2",
+        "status: running locally",
+        "port: 11434",
+        "ram: 11.2 GB / 16 GB",
+        "threads: 8",
+        "────────────────",
+        "tokens/s: 24.7",
+        "ctx_used: 2048",
+        "ctx_max: 131072",
+        "────────────────",
+        "session.id: a3f9",
+        "msgs.total: 147",
+        "code.analyzed: 23",
+        "bugs.found: 3",
+        "suggestions: 41",
+        "────────────────",
+        "privacy: 100%",
+        "internet: false",
+        "api_key: none",
+        "$ ollama ps",
+        "  prya  running"
+      ];
+
+      function startTerminal(el, lines, speed) {
+        var i = 0;
+        function addLine() {
+          if (i >= lines.length) {
+            setTimeout(function () { el.innerHTML = ""; i = 0; addLine(); }, 4000);
+            return;
+          }
+          var line = document.createElement("div");
+          line.textContent = lines[i];
+          line.style.opacity = "0";
+          el.appendChild(line);
+          gsap.to(line, { opacity: 1, duration: 0.25 });
+          i++;
+          setTimeout(addLine, speed + Math.random() * 150);
         }
-        var line = document.createElement("div");
-        line.textContent = lines[i];
-        line.style.opacity = "0";
-        container.appendChild(line);
-        gsap.to(line, { opacity: 1, duration: 0.3 });
-        i++;
-        setTimeout(addLine, 380);
+        addLine();
       }
 
-      setTimeout(addLine, 500);
+      startTerminal(leftEl, leftLines, 320);
+      setTimeout(function () { startTerminal(rightEl, rightLines, 280); }, 800);
     }
-
     init();
   })();
   </script>
 )}
 
-{/* ============ DTR ============ */}
+{/* ============ DTR — dois planetas 3D orbitando ============ */}
 {slug === "dtr" && (
   <canvas id="dtr-canvas" class="fixed inset-0 pointer-events-none z-0" style="width:100%;height:100%;" aria-hidden="true"></canvas>
 )}
@@ -328,44 +368,61 @@ const { slug } = Astro.props;
 
     var cx = canvas.width / 2;
     var cy = canvas.height / 2;
-    var radius = 90;
+    var orbitRadiusX = Math.min(canvas.width, canvas.height) * 0.32;
+    var orbitRadiusY = orbitRadiusX * 0.28;
+    var planetRadius = Math.min(canvas.width, canvas.height) * 0.13;
     var angle = 0;
+
+    function drawPlanet(x, y, r, hue, label) {
+      var grad = ctx.createRadialGradient(
+        x - r * 0.35, y - r * 0.35, r * 0.05,
+        x, y, r
+      );
+      grad.addColorStop(0,    "hsla(" + hue + ",30%,85%,0.32)");
+      grad.addColorStop(0.4,  "hsla(" + hue + ",20%,60%,0.24)");
+      grad.addColorStop(0.75, "hsla(" + hue + ",15%,35%,0.20)");
+      grad.addColorStop(1,    "hsla(" + hue + ",10%,10%,0.08)");
+
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      var shine = ctx.createRadialGradient(
+        x - r * 0.38, y - r * 0.38, 0,
+        x - r * 0.38, y - r * 0.38, r * 0.45
+      );
+      shine.addColorStop(0, "rgba(255,255,255,0.25)");
+      shine.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = shine;
+      ctx.fill();
+
+      ctx.fillStyle = "rgba(200,200,200,0.22)";
+      ctx.font = "bold " + Math.floor(r * 0.28) + "px monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(label, x, y);
+    }
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      var laX = cx + Math.cos(angle) * radius;
-      var laY = cy + Math.sin(angle) * radius;
-      var raX = cx + Math.cos(angle + Math.PI) * radius;
-      var raY = cy + Math.sin(angle + Math.PI) * radius;
+      var laX = cx + Math.cos(angle) * orbitRadiusX;
+      var laY = cy + Math.sin(angle) * orbitRadiusY;
+      var raX = cx + Math.cos(angle + Math.PI) * orbitRadiusX;
+      var raY = cy + Math.sin(angle + Math.PI) * orbitRadiusY;
 
-      // Linha de conexão pulsante
-      var pulse = (Math.sin(angle * 3) + 1) / 2;
-      ctx.strokeStyle = "rgba(128,128,128," + (0.05 + pulse * 0.06) + ")";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(laX, laY);
-      ctx.lineTo(raX, raY);
-      ctx.stroke();
+      if (laY < raY) {
+        drawPlanet(laX, laY, planetRadius * 0.85, 220, "La");
+        drawPlanet(raX, raY, planetRadius, 180, "Ra");
+      } else {
+        drawPlanet(raX, raY, planetRadius * 0.85, 180, "Ra");
+        drawPlanet(laX, laY, planetRadius, 220, "La");
+      }
 
-      // Nó La
-      ctx.beginPath();
-      ctx.arc(laX, laY, 6, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(128,128,128,0.12)";
-      ctx.fill();
-      ctx.fillStyle = "rgba(128,128,128,0.10)";
-      ctx.font = "10px monospace";
-      ctx.fillText("La", laX + 10, laY + 4);
-
-      // Nó Ra
-      ctx.beginPath();
-      ctx.arc(raX, raY, 6, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(128,128,128,0.10)";
-      ctx.fill();
-      ctx.fillStyle = "rgba(128,128,128,0.08)";
-      ctx.fillText("Ra", raX + 10, raY + 4);
-
-      angle += 0.006;
+      angle += 0.004;
       requestAnimationFrame(draw);
     }
 
@@ -376,12 +433,15 @@ const { slug } = Astro.props;
       canvas.height = window.innerHeight;
       cx = canvas.width / 2;
       cy = canvas.height / 2;
+      orbitRadiusX = Math.min(canvas.width, canvas.height) * 0.32;
+      orbitRadiusY = orbitRadiusX * 0.28;
+      planetRadius = Math.min(canvas.width, canvas.height) * 0.13;
     });
   })();
   </script>
 )}
 
-{/* ============ HOLLOW REIGN ============ */}
+{/* ============ HOLLOW REIGN — névoa + cinzas ============ */}
 {slug === "hollow-reign" && (
   <canvas id="hollow-canvas" class="fixed inset-0 pointer-events-none z-0" style="width:100%;height:100%;" aria-hidden="true"></canvas>
 )}
@@ -396,36 +456,63 @@ const { slug } = Astro.props;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    function drawSword(x, y, size, alpha) {
-      ctx.fillStyle = "rgba(128,128,128," + alpha + ")";
-      var s = size;
-      ctx.fillRect(x + s * 3, y,          s,     s * 5);
-      ctx.fillRect(x,          y + s * 2, s * 7, s);
-      ctx.fillRect(x + s * 3, y + s * 5,  s,     s * 2);
-    }
-
-    var particles = Array.from({ length: 35 }, function () {
+    var clouds = Array.from({ length: 12 }, function () {
       return {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
+        r: Math.random() * 220 + 120,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.12,
+        alpha: Math.random() * 0.10 + 0.06,
+        hue: Math.random() > 0.5 ? 0 : 200
+      };
+    });
+
+    var ashes = Array.from({ length: 60 }, function () {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2.5 + 0.5,
         speed: Math.random() * 0.5 + 0.15,
-        size: Math.random() > 0.5 ? 2 : 3,
-        alpha: Math.random() * 0.06 + 0.03,
-        drift: (Math.random() - 0.5) * 0.25
+        drift: (Math.random() - 0.5) * 0.3,
+        alpha: Math.random() * 0.18 + 0.06
       };
     });
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(function (p) {
-        drawSword(p.x, p.y, p.size, p.alpha);
-        p.y += p.speed;
-        p.x += p.drift;
-        if (p.y > canvas.height + 20) {
-          p.y = -20;
-          p.x = Math.random() * canvas.width;
+
+      clouds.forEach(function (c) {
+        var grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r);
+        grad.addColorStop(0, "hsla(" + c.hue + ",15%,20%," + c.alpha + ")");
+        grad.addColorStop(1, "hsla(" + c.hue + ",10%,10%,0)");
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+        c.x += c.vx;
+        c.y += c.vy;
+        if (c.x < -c.r) c.x = canvas.width + c.r;
+        if (c.x > canvas.width + c.r) c.x = -c.r;
+        if (c.y < -c.r) c.y = canvas.height + c.r;
+        if (c.y > canvas.height + c.r) c.y = -c.r;
+      });
+
+      ashes.forEach(function (a) {
+        ctx.globalAlpha = a.alpha;
+        ctx.fillStyle = "rgba(160,160,160,1)";
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+        ctx.fill();
+        a.y += a.speed;
+        a.x += a.drift;
+        if (a.y > canvas.height + 5) {
+          a.y = -5;
+          a.x = Math.random() * canvas.width;
         }
       });
+      ctx.globalAlpha = 1;
+
       requestAnimationFrame(draw);
     }
 
