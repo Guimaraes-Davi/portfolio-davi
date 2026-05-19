@@ -1,0 +1,296 @@
+---
+interface Props {
+  slug: string;
+}
+const { slug } = Astro.props;
+
+const usesCanvas = ["pokedex", "dead-drop", "hollow-reign"].includes(slug);
+const usesDivs = ["nexus-chat", "leitor-xml", "prya", "dtr"].includes(slug);
+---
+
+<div
+  id="project-theme"
+  data-slug={slug}
+  class="fixed inset-0 pointer-events-none z-0 overflow-hidden"
+  aria-hidden="true"
+>
+  {usesCanvas && <canvas id="theme-canvas" class="absolute inset-0 w-full h-full"></canvas>}
+  {usesDivs && <div id="theme-els" class="absolute inset-0 w-full h-full"></div>}
+</div>
+
+<script is:inline>
+(function () {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  function init() {
+    if (typeof gsap === "undefined") return;
+
+    var themeEl = document.getElementById("project-theme");
+    if (!themeEl) return;
+    var slug = themeEl.dataset.slug;
+    var W = window.innerWidth;
+    var H = window.innerHeight;
+
+    function getCSSVar(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function hexToRgba(hex, a) {
+      if (!hex || hex[0] !== "#" || hex.length < 7) return "rgba(10,10,10," + a + ")";
+      var r = parseInt(hex.slice(1, 3), 16);
+      var g = parseInt(hex.slice(3, 5), 16);
+      var b = parseInt(hex.slice(5, 7), 16);
+      return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+    }
+
+    if (slug === "pokedex") {
+      var canvas = document.getElementById("theme-canvas");
+      if (!canvas) return;
+      canvas.width = W;
+      canvas.height = H;
+      var ctx = canvas.getContext("2d");
+
+      var balls = [];
+      for (var i = 0; i < 8; i++) {
+        balls.push({ x: Math.random() * W, y: Math.random() * H, r: 18 + Math.random() * 16 });
+      }
+
+      function drawBall(b) {
+        ctx.save();
+        ctx.globalAlpha = 0.06;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, Math.PI, 0);
+        ctx.fillStyle = "#ef4444";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, 0, Math.PI);
+        ctx.fillStyle = "#e2e8f0";
+        ctx.fill();
+        ctx.strokeStyle = "#94a3b8";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(b.x - b.r, b.y);
+        ctx.lineTo(b.x + b.r, b.y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r * 0.22, 0, Math.PI * 2);
+        ctx.fillStyle = "#f8fafc";
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      (function render() {
+        ctx.clearRect(0, 0, W, H);
+        balls.forEach(drawBall);
+        requestAnimationFrame(render);
+      })();
+
+      balls.forEach(function (b) {
+        var proxy = { x: b.x, y: b.y };
+        gsap.to(proxy, {
+          x: Math.random() * W,
+          y: Math.random() * H,
+          duration: 8 + Math.random() * 7,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          onUpdate: function () {
+            b.x = proxy.x;
+            b.y = proxy.y;
+          },
+        });
+      });
+
+    } else if (slug === "dead-drop") {
+      var canvas = document.getElementById("theme-canvas");
+      if (!canvas) return;
+      canvas.width = W;
+      canvas.height = H;
+      var ctx = canvas.getContext("2d");
+      var bgColor = getCSSVar("--bg");
+      var textColor = getCSSVar("--text");
+      var cols = Math.floor(W / 14);
+      var drops = [];
+      for (var c = 0; c < cols; c++) drops[c] = Math.random() * -H;
+      var chars = "アイウエオカサシスセソタチツ01{}[]<>/\\|";
+
+      setInterval(function () {
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = hexToRgba(bgColor, 0.15);
+        ctx.fillRect(0, 0, W, H);
+        ctx.font = "12px monospace";
+        ctx.globalAlpha = 0.04;
+        ctx.fillStyle = textColor || "#fafafa";
+        for (var i = 0; i < drops.length; i++) {
+          ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * 14, drops[i]);
+          drops[i] += 10;
+          if (drops[i] > H && Math.random() > 0.97) drops[i] = 0;
+        }
+      }, 55);
+
+    } else if (slug === "nexus-chat") {
+      var container = document.getElementById("theme-els");
+      if (!container) return;
+      var sizes = [40, 70, 55, 90, 45, 65];
+      sizes.forEach(function (w, i) {
+        var el = document.createElement("div");
+        el.style.position = "absolute";
+        el.style.borderRadius = "18px";
+        el.style.background = "var(--border)";
+        el.style.opacity = "0.08";
+        el.style.width = w + "px";
+        el.style.height = Math.round(w * 0.45) + "px";
+        el.style.left = (8 + Math.random() * 80) + "%";
+        el.style.top = (8 + Math.random() * 80) + "%";
+        container.appendChild(el);
+        gsap.to(el, {
+          x: (Math.random() - 0.5) * 70,
+          y: (Math.random() - 0.5) * 70,
+          duration: 8 + Math.random() * 7,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: i * 0.6,
+        });
+      });
+
+    } else if (slug === "leitor-xml") {
+      var container = document.getElementById("theme-els");
+      if (!container) return;
+      var tags = ["<nfeProc>", "<emit>", "<dest>", "<infNFe>", "<ICMSTot>", "<det>", "<imposto>", "<ICMS>"];
+      tags.forEach(function (tag, i) {
+        var el = document.createElement("span");
+        el.textContent = tag;
+        el.style.position = "absolute";
+        el.style.fontFamily = "monospace";
+        el.style.fontSize = "13px";
+        el.style.color = "var(--text)";
+        el.style.opacity = "0";
+        el.style.whiteSpace = "nowrap";
+        el.style.left = (5 + Math.random() * 85) + "%";
+        el.style.top = (5 + Math.random() * 85) + "%";
+        container.appendChild(el);
+        gsap.fromTo(
+          el,
+          { opacity: 0 },
+          {
+            opacity: 0.05,
+            duration: 1.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut",
+            delay: i * 0.8,
+            repeatDelay: 1.5 + Math.random() * 3,
+          }
+        );
+      });
+
+    } else if (slug === "prya") {
+      var container = document.getElementById("theme-els");
+      if (!container) return;
+      var lines = [
+        "def analyze():", "return result", "import os",
+        "for item in data:", "if error:", "model.run()",
+        "async def fetch():", "yield chunk",
+      ];
+      lines.forEach(function (line, i) {
+        var el = document.createElement("span");
+        el.textContent = line;
+        el.style.position = "absolute";
+        el.style.fontFamily = "monospace";
+        el.style.fontSize = "12px";
+        el.style.color = "var(--text)";
+        el.style.opacity = "0.03";
+        el.style.whiteSpace = "nowrap";
+        el.style.left = (5 + Math.random() * 75) + "%";
+        el.style.top = (100 + Math.random() * 50) + "%";
+        container.appendChild(el);
+        gsap.to(el, {
+          y: -(H + 300),
+          duration: 18 + Math.random() * 15,
+          repeat: -1,
+          ease: "none",
+          delay: i * 1.8,
+        });
+      });
+
+    } else if (slug === "dtr") {
+      var container = document.getElementById("theme-els");
+      if (!container) return;
+      var cx = W / 2, cy = H / 2, orbitR = 60;
+
+      var c1 = document.createElement("div");
+      c1.style.position = "absolute";
+      c1.style.width = "18px";
+      c1.style.height = "18px";
+      c1.style.borderRadius = "50%";
+      c1.style.background = "var(--text)";
+      c1.style.opacity = "0.08";
+      c1.style.transform = "translate(-50%,-50%)";
+
+      var c2 = document.createElement("div");
+      c2.style.position = "absolute";
+      c2.style.width = "14px";
+      c2.style.height = "14px";
+      c2.style.borderRadius = "50%";
+      c2.style.background = "var(--accent)";
+      c2.style.opacity = "0.06";
+      c2.style.transform = "translate(-50%,-50%)";
+
+      container.appendChild(c1);
+      container.appendChild(c2);
+
+      var state = { angle: 0 };
+      gsap.to(state, {
+        angle: Math.PI * 2,
+        duration: 8,
+        repeat: -1,
+        ease: "none",
+        onUpdate: function () {
+          c1.style.left = (cx + Math.cos(state.angle) * orbitR) + "px";
+          c1.style.top = (cy + Math.sin(state.angle) * orbitR) + "px";
+          c2.style.left = (cx + Math.cos(state.angle + Math.PI) * orbitR) + "px";
+          c2.style.top = (cy + Math.sin(state.angle + Math.PI) * orbitR) + "px";
+        },
+      });
+
+    } else if (slug === "hollow-reign") {
+      var canvas = document.getElementById("theme-canvas");
+      if (!canvas) return;
+      canvas.width = W;
+      canvas.height = H;
+      var ctx = canvas.getContext("2d");
+      var textColor = getCSSVar("--text");
+      var particles = [];
+      for (var p = 0; p < 35; p++) {
+        particles.push({
+          x: Math.random() * W,
+          y: Math.random() * H - H,
+          speed: 0.4 + Math.random() * 0.6,
+        });
+      }
+      (function pixelDraw() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalAlpha = 0.05;
+        ctx.fillStyle = textColor || "#fafafa";
+        particles.forEach(function (p) {
+          ctx.fillRect(p.x, p.y, 3, 3);
+          p.y += p.speed;
+          if (p.y > H) {
+            p.y = -10;
+            p.x = Math.random() * W;
+          }
+        });
+        requestAnimationFrame(pixelDraw);
+      })();
+    }
+  }
+
+  if (window._gsapReady) {
+    init();
+  } else {
+    (window._gsapQueue = window._gsapQueue || []).push(init);
+  }
+})();
+</script>

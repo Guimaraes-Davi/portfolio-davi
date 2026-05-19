@@ -5,7 +5,7 @@ import Icon from "./Icon.astro";
 <div class="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
   <!-- Text -->
   <div>
-    <p class="text-[var(--text)] leading-relaxed mb-5">
+    <p data-animate="about-text" class="text-[var(--text)] leading-relaxed mb-5">
       Tenho 20 anos, sou de Feira de Santana — Bahia, e desde 2022 venho
       construindo uma trajetória sólida em desenvolvimento de software. Comecei
       com lógica de programação, passei pelo técnico no SENAI, concluí o
@@ -13,14 +13,14 @@ import Icon from "./Icon.astro";
       Engenharia de Software pela UNIFAN. No segundo semestre de 2026 inicio uma
       pós-graduação em Segurança de Dados.
     </p>
-    <p class="text-[var(--text)] leading-relaxed mb-5">
+    <p data-animate="about-text" class="text-[var(--text)] leading-relaxed mb-5">
       Profissionalmente, atuo desde 2023 em suporte técnico a sistemas ERP —
       uma experiência que me deu fluência em fluxos de negócio complexos,
       módulos fiscais brasileiros (NF-e, CT-e, MDF-e), gestão de estoque,
       faturamento e integração entre sistemas. Trabalhei com clientes regionais
       e nacionais, e aprendi a diagnosticar problemas técnicos sob pressão.
     </p>
-    <p class="text-[var(--text)] leading-relaxed">
+    <p data-animate="about-text" class="text-[var(--text)] leading-relaxed">
       Em paralelo, construo projetos pessoais que cobrem áreas que me
       interessam: criptografia ponta a ponta, IA local com LLMs, parsing de
       documentos fiscais, sistemas multi-agente. Busco minha primeira
@@ -31,7 +31,7 @@ import Icon from "./Icon.astro";
  
   <!-- Side info -->
   <div class="flex flex-col gap-4">
-    <div class="rounded-xl border border-[var(--border)] p-5">
+    <div data-animate="about-card" class="rounded-xl border border-[var(--border)] p-5">
       <h3
         class="text-xs font-semibold text-[var(--text)] uppercase tracking-wider mb-4"
       >
@@ -61,7 +61,7 @@ import Icon from "./Icon.astro";
       </ul>
     </div>
  
-    <div class="rounded-xl border border-[var(--border)] p-5">
+    <div data-animate="about-card" class="rounded-xl border border-[var(--border)] p-5">
       <h3
         class="text-xs font-semibold text-[var(--text)] uppercase tracking-wider mb-3"
       >
@@ -76,3 +76,24 @@ import Icon from "./Icon.astro";
     </div>
   </div>
 </div>
+
+<script is:inline>
+(function() {
+  function init() {
+    gsap.utils.toArray('[data-animate="about-text"]').forEach(function(el) {
+      gsap.from(el, {
+        opacity: 0, y: 25, duration: 0.6, ease: "power2.out",
+        scrollTrigger: { trigger: el, start: "top 85%", once: true }
+      });
+    });
+    gsap.utils.toArray('[data-animate="about-card"]').forEach(function(el, i) {
+      gsap.from(el, {
+        opacity: 0, x: 40, duration: 0.6, ease: "power2.out", delay: i * 0.15,
+        scrollTrigger: { trigger: el, start: "top 85%", once: true }
+      });
+    });
+  }
+  if (window._gsapReady) { init(); }
+  else { (window._gsapQueue = window._gsapQueue || []).push(init); }
+})();
+</script>

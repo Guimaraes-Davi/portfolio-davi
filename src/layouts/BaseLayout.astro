@@ -83,5 +83,15 @@ const ogImageUrl = ogImage?.startsWith("http")
       <slot />
     </main>
     <Footer />
+    <!-- GSAP + ScrollTrigger via CDN — zero bundle impact -->
+    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script is:inline>
+      gsap.registerPlugin(ScrollTrigger);
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        (window._gsapQueue || []).forEach(function(fn) { fn(); });
+      }
+      window._gsapReady = true;
+    </script>
   </body>
 </html>

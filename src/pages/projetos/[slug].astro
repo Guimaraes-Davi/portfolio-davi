@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import TechChip from "../../components/TechChip.astro";
 import Icon from "../../components/Icon.astro";
+import ProjectTheme from "../../components/ProjectTheme.astro";
 import { getAllProjects, formatDate } from "../../utils/projects";
 import { getCollection } from "astro:content";
 import { SITE } from "../../config";
@@ -53,7 +54,8 @@ const hasEmbed = embeddable && embedUrl && !embedUrl.includes("{{");
   description={shortDescription}
   canonicalUrl={canonicalUrl}
 >
-  <div class="container pt-10 pb-24">
+  <ProjectTheme slug={project.slug} />
+  <div class="container pt-10 pb-24 relative z-10">
     <!-- Breadcrumb -->
     <nav aria-label="Breadcrumb" class="mb-10">
       <ol class="flex items-center gap-2 text-sm text-[var(--text-muted)]">

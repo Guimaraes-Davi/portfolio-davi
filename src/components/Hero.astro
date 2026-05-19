@@ -19,6 +19,7 @@ import Icon from "./Icon.astro";
 
       <!-- Headline -->
       <h1
+        data-animate="hero-title"
         class="text-[clamp(2rem,5vw,3.25rem)] font-bold text-[var(--text)] leading-[1.1] tracking-tight mb-5 text-balance"
       >
         Desenvolvedor Full-Stack em busca de oportunidade
@@ -29,6 +30,7 @@ import Icon from "./Icon.astro";
 
       <!-- Subheadline -->
       <p
+        data-animate="hero-sub"
         class="text-base md:text-lg text-[var(--text-muted)] leading-relaxed mb-4 max-w-xl"
       >
         Back-end, banco de dados, IA, segurança, full-stack ou front-end.
@@ -36,14 +38,14 @@ import Icon from "./Icon.astro";
       </p>
 
       <!-- Bio -->
-      <p class="text-sm text-[var(--text-muted)] leading-relaxed mb-10 max-w-lg">
+      <p data-animate="hero-bio" class="text-sm text-[var(--text-muted)] leading-relaxed mb-10 max-w-lg">
         Tecnólogo em Desenvolvimento Back-End e Técnico em Desenvolvimento de
         Sistemas. Construo aplicações completas com foco em código limpo,
         segurança e utilidade real.
       </p>
 
       <!-- CTAs -->
-      <div class="flex flex-wrap gap-3 mb-4">
+      <div data-animate="hero-ctas" class="flex flex-wrap gap-3 mb-4">
         <a href="/#projetos" class="btn-primary">
           Ver projetos
           <Icon name="arrow-right" size={16} />
@@ -64,7 +66,7 @@ import Icon from "./Icon.astro";
       </div>
 
       <!-- Availability note -->
-      <p class="text-xs text-[var(--text-muted)]">
+      <p data-animate="hero-avail" class="text-xs text-[var(--text-muted)]">
         Aberto a oportunidades CLT, estágio, freelance e projetos em startups.
       </p>
     </div>
@@ -120,6 +122,21 @@ import Icon from "./Icon.astro";
     </div>
   </div>
 </div>
+
+<script is:inline>
+(function() {
+  function init() {
+    gsap.set('[data-animate^="hero"]', { opacity: 0, y: 30 });
+    gsap.to('[data-animate="hero-title"]', { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.1 });
+    gsap.to('[data-animate="hero-sub"]',   { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.3 });
+    gsap.to('[data-animate="hero-bio"]',   { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.5 });
+    gsap.to('[data-animate="hero-ctas"]',  { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", delay: 0.7 });
+    gsap.to('[data-animate="hero-avail"]', { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", delay: 1.0 });
+  }
+  if (window._gsapReady) { init(); }
+  else { (window._gsapQueue = window._gsapQueue || []).push(init); }
+})();
+</script>
 
 <script>
   const btn = document.getElementById("cv-preview-btn")!;

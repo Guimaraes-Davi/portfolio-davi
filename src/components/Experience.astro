@@ -42,7 +42,7 @@ const experiences = [
 <div class="space-y-5">
   {
     experiences.map((exp) => (
-      <div class="relative rounded-xl border border-[var(--border)] bg-[var(--bg)] p-6 md:p-8">
+      <div data-animate="exp-card" class="relative rounded-xl border border-[var(--border)] bg-[var(--bg)] p-6 md:p-8">
         {exp.current && (
           <div class="absolute top-6 right-6 flex items-center gap-2">
             <span
@@ -90,3 +90,18 @@ const experiences = [
     ))
   }
 </div>
+
+<script is:inline>
+(function() {
+  function init() {
+    gsap.utils.toArray('[data-animate="exp-card"]').forEach(function(el, i) {
+      gsap.from(el, {
+        opacity: 0, y: 40, duration: 0.6, ease: "power2.out", delay: i * 0.2,
+        scrollTrigger: { trigger: el, start: "top 85%", once: true }
+      });
+    });
+  }
+  if (window._gsapReady) { init(); }
+  else { (window._gsapQueue = window._gsapQueue || []).push(init); }
+})();
+</script>

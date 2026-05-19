@@ -78,7 +78,7 @@ const skillGroups: Array<{
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
   {
     skillGroups.map((group) => (
-      <div class="rounded-xl border border-[var(--border)] bg-[var(--bg)] p-5">
+      <div data-animate="skill-group" class="rounded-xl border border-[var(--border)] bg-[var(--bg)] p-5">
         <div class="flex items-center gap-2.5 mb-4">
           <Icon
             name={group.icon}
@@ -91,7 +91,7 @@ const skillGroups: Array<{
         </div>
         <div class="flex flex-wrap gap-1.5">
           {group.skills.map((skill) => (
-            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-mono bg-[var(--bg-subtle)] text-[var(--text-muted)] border border-[var(--border)]">
+            <span data-animate="skill-chip" class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-mono bg-[var(--bg-subtle)] text-[var(--text-muted)] border border-[var(--border)]">
               {skill}
             </span>
           ))}
@@ -100,3 +100,19 @@ const skillGroups: Array<{
     ))
   }
 </div>
+
+<script is:inline>
+(function() {
+  function init() {
+    gsap.utils.toArray('[data-animate="skill-group"]').forEach(function(group) {
+      var chips = group.querySelectorAll('[data-animate="skill-chip"]');
+      gsap.from(chips, {
+        opacity: 0, y: 15, duration: 0.4, ease: "power2.out", stagger: 0.04,
+        scrollTrigger: { trigger: group, start: "top 85%", once: true }
+      });
+    });
+  }
+  if (window._gsapReady) { init(); }
+  else { (window._gsapQueue = window._gsapQueue || []).push(init); }
+})();
+</script>
