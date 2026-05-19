@@ -5,7 +5,7 @@ interface Props {
 const { slug } = Astro.props;
 ---
 
-{/* ============ POKÉDEX — 45 pokémons, sem timidez ============ */}
+{/* ============ POKÉDEX — 45 pokémons ============ */}
 {slug === "pokedex" && (
   <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true" id="pokemon-bg"></div>
 )}
@@ -67,7 +67,7 @@ const { slug } = Astro.props;
   </script>
 )}
 
-{/* ============ DEAD DROP — mantém ============ */}
+{/* ============ DEAD DROP ============ */}
 {slug === "dead-drop" && (
   <canvas id="matrix-canvas" class="fixed inset-0 pointer-events-none z-0" style="width:100%;height:100%;" aria-hidden="true"></canvas>
 )}
@@ -351,7 +351,7 @@ const { slug } = Astro.props;
   </script>
 )}
 
-{/* ============ DTR — dois planetas 3D orbitando ============ */}
+{/* ============ DTR ============ */}
 {slug === "dtr" && (
   <canvas id="dtr-canvas" class="fixed inset-0 pointer-events-none z-0" style="width:100%;height:100%;" aria-hidden="true"></canvas>
 )}
@@ -415,11 +415,11 @@ const { slug } = Astro.props;
       var raY = cy + Math.sin(angle + Math.PI) * orbitRadiusY;
 
       if (laY < raY) {
-        drawPlanet(laX, laY, planetRadius * 0.85, 320, " ");
-        drawPlanet(raX, raY, planetRadius, 300, " ");
+        drawPlanet(laX, laY, planetRadius * 0.85, 920, " ");
+        drawPlanet(raX, raY, planetRadius, 900, " ");
       } else {
-        drawPlanet(raX, raY, planetRadius * 0.85, 300, " ");
-        drawPlanet(laX, laY, planetRadius, 320, " ");
+        drawPlanet(raX, raY, planetRadius * 0.85, 900, " ");
+        drawPlanet(laX, laY, planetRadius, 920, " ");
       }
 
       angle += 0.004;
