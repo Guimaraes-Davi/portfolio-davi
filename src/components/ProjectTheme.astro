@@ -415,11 +415,11 @@ const { slug } = Astro.props;
       var raY = cy + Math.sin(angle + Math.PI) * orbitRadiusY;
 
       if (laY < raY) {
-        drawPlanet(laX, laY, planetRadius * 0.85, 220, "La");
-        drawPlanet(raX, raY, planetRadius, 180, "Ra");
+        drawPlanet(laX, laY, planetRadius * 0.85, 320, " ");
+        drawPlanet(raX, raY, planetRadius, 300, " ");
       } else {
-        drawPlanet(raX, raY, planetRadius * 0.85, 180, "Ra");
-        drawPlanet(laX, laY, planetRadius, 220, "La");
+        drawPlanet(raX, raY, planetRadius * 0.85, 300, " ");
+        drawPlanet(laX, laY, planetRadius, 320, " ");
       }
 
       angle += 0.004;
