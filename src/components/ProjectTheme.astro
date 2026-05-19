@@ -363,79 +363,140 @@ const { slug } = Astro.props;
     if (!canvas) return;
     var ctx = canvas.getContext("2d");
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    var targetWidth = window.innerWidth;
+    var targetHeight = window.innerHeight;
+
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
 
     var cx = canvas.width / 2;
     var cy = canvas.height / 2;
-    var orbitRadiusX = Math.min(canvas.width, canvas.height) * 0.32;
-    var orbitRadiusY = orbitRadiusX * 0.28;
-    var planetRadius = Math.min(canvas.width, canvas.height) * 0.13;
+    
+    var orbitRadiusX = Math.min(canvas.width, canvas.height) * 0.48;
+    var orbitRadiusY = orbitRadiusX * 0.35; 
+    var basePlanetRadius = Math.min(canvas.width, canvas.height) * 0.22;
     var angle = 0;
 
-    function drawPlanet(x, y, r, hue, label) {
-      var grad = ctx.createRadialGradient(
-        x - r * 0.35, y - r * 0.35, r * 0.05,
+    // Função de desenho com Luz Dinâmica 3D
+    function drawPlanet(x, y, r, hue, currentAngle, isDarkMode) {
+      ctx.save();
+
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.clip();
+
+      // CÁLCULO DA LUZ 3D DINÂMICA:
+      // O ponto focal da luz se move dependendo do ângulo orbital atual do planeta.
+      // Isso impede o efeito de "imagem estática deslizando" (PNG) e dá volumetria esférica real.
+      var lightX = x - Math.cos(currentAngle) * (r * 0.4);
+      var lightY = y - Math.sin(currentAngle) * (r * 0.2);
+
+      // Oclusão oposta (onde a sombra se acumula na curvatura do planeta)
+      var shadowX = x + Math.cos(currentAngle) * (r * 0.3);
+      var shadowY = y + Math.sin(currentAngle) * (r * 0.1);
+
+      var baseGrad = ctx.createRadialGradient(
+        lightX, lightY, r * 0.02,
         x, y, r
       );
-      grad.addColorStop(0,    "hsla(" + hue + ",30%,85%,0.32)");
-      grad.addColorStop(0.4,  "hsla(" + hue + ",20%,60%,0.24)");
-      grad.addColorStop(0.75, "hsla(" + hue + ",15%,35%,0.20)");
-      grad.addColorStop(1,    "hsla(" + hue + ",10%,10%,0.08)");
 
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fillStyle = grad;
+      // RETORNO DAS CORES ANTERIORES: Tons super reduzidos e discretos (saturação em 6%)
+      if (isDarkMode) {
+        baseGrad.addColorStop(0,   "hsl(" + hue + ", 6%, 22%)"); 
+        baseGrad.addColorStop(0.5, "hsl(" + hue + ", 5%, 14%)"); 
+        baseGrad.addColorStop(1,   "hsl(" + hue + ", 4%, 8%)");  
+      } else {
+        baseGrad.addColorStop(0,   "hsl(" + hue + ", 6%, 100%)"); 
+        baseGrad.addColorStop(0.6, "hsl(" + hue + ", 4%, 96%)");  
+        baseGrad.addColorStop(1,   "hsl(" + hue + ", 3%, 89%)");  
+      }
+
+      ctx.fillStyle = baseGrad;
       ctx.fill();
 
-      var shine = ctx.createRadialGradient(
-        x - r * 0.38, y - r * 0.38, 0,
-        x - r * 0.38, y - r * 0.38, r * 0.45
+      // Gradiente de textura/sombra mapeado de forma reversa ao ponto de luz dinâmico
+      var textureShadow = ctx.createRadialGradient(
+        shadowX, shadowY, r * 0.1,
+        shadowX, shadowY, r * 1.2
       );
-      shine.addColorStop(0, "rgba(255,255,255,0.25)");
-      shine.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
+      
+      if (isDarkMode) {
+        textureShadow.addColorStop(0, "rgba(0, 0, 0, 0)");
+        textureShadow.addColorStop(0.6, "rgba(0, 0, 0, 0.55)");
+        textureShadow.addColorStop(1, "rgba(0, 0, 0, 0.98)"); 
+      } else {
+        textureShadow.addColorStop(0, "rgba(0, 0, 0, 0)");
+        textureShadow.addColorStop(0.6, "rgba(0, 0, 0, 0.08)");
+        textureShadow.addColorStop(1, "rgba(0, 0, 0, 0.25)"); 
+      }
+
+      ctx.fillStyle = textureShadow;
+      ctx.fill();
+
+      // Brilho especular sutil acompanhando o ponto de luz
+      var shine = ctx.createRadialGradient(
+        lightX, lightY, 0,
+        lightX, lightY, r * 0.5
+      );
+      var shineOpacity = isDarkMode ? "0.08" : "0.35";
+      shine.addColorStop(0, "rgba(255, 255, 255, " + shineOpacity + ")"); 
+      shine.addColorStop(1, "rgba(255, 255, 255, 0)");
+      
       ctx.fillStyle = shine;
       ctx.fill();
 
-      ctx.fillStyle = "rgba(200,200,200,0.22)";
-      ctx.font = "bold " + Math.floor(r * 0.28) + "px monospace";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(label, x, y);
+      ctx.restore();
     }
 
     function draw() {
+      if (Math.abs(canvas.width - targetWidth) > 1 || Math.abs(canvas.height - targetHeight) > 1) {
+        canvas.width += (targetWidth - canvas.width) * 0.1;
+        canvas.height += (targetHeight - canvas.height) * 0.1;
+        
+        cx = canvas.width / 2;
+        cy = canvas.height / 2;
+        orbitRadiusX = Math.min(canvas.width, canvas.height) * 0.48;
+        orbitRadiusY = orbitRadiusX * 0.35;
+        basePlanetRadius = Math.min(canvas.width, canvas.height) * 0.22;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      var laX = cx + Math.cos(angle) * orbitRadiusX;
-      var laY = cy + Math.sin(angle) * orbitRadiusY;
+      var isDarkMode = document.documentElement.classList.contains('dark');
+
+      var sinAngle = Math.sin(angle);
+      var cosAngle = Math.cos(angle);
+
+      var laX = cx + cosAngle * orbitRadiusX;
+      var laY = cy + sinAngle * orbitRadiusY;
+      
       var raX = cx + Math.cos(angle + Math.PI) * orbitRadiusX;
       var raY = cy + Math.sin(angle + Math.PI) * orbitRadiusY;
 
+      var laScale = 0.925 + sinAngle * 0.075;
+      var raScale = 0.925 + Math.sin(angle + Math.PI) * 0.075;
+
+      var laRadius = basePlanetRadius * laScale;
+      var raRadius = basePlanetRadius * raScale;
+
+      // Passamos o ângulo correspondente de cada planeta para deslocar a iluminação internamente
       if (laY < raY) {
-        drawPlanet(laX, laY, planetRadius * 0.15);
-        drawPlanet(raX, raY, planetRadius);
+        drawPlanet(laX, laY, laRadius, 0, angle, isDarkMode);               // Vermelho desbotado atrás
+        drawPlanet(raX, raY, raRadius, 210, angle + Math.PI, isDarkMode);   // Azul desbotado na frente
       } else {
-        drawPlanet(raX, raY, planetRadius * 0.15);
-        drawPlanet(laX, laY, planetRadius);
+        drawPlanet(raX, raY, raRadius, 210, angle + Math.PI, isDarkMode);   // Azul desbotado atrás
+        drawPlanet(laX, laY, laRadius, 0, angle, isDarkMode);               // Vermelho desbotado na frente
       }
 
-      angle += 0.004;
+      angle += 0.010;
       requestAnimationFrame(draw);
     }
 
     draw();
 
     window.addEventListener("resize", function () {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      cx = canvas.width / 2;
-      cy = canvas.height / 2;
-      orbitRadiusX = Math.min(canvas.width, canvas.height) * 0.32;
-      orbitRadiusY = orbitRadiusX * 0.28;
-      planetRadius = Math.min(canvas.width, canvas.height) * 0.9;
+      targetWidth = window.innerWidth;
+      targetHeight = window.innerHeight;
     });
   })();
   </script>
