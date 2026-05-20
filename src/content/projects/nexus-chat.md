@@ -9,8 +9,8 @@ liveUrl: "https://nexus-chat-uz53.onrender.com"
 embeddable: false
 featured: true
 privateProject: false
-startDate: 2024-09-01
-endDate: 2024-11-01
+startDate: 2026-05-08
+endDate: 2026-08-14
 tags: ["seguranca", "websockets", "real-time", "node"]
 screenshots:
   - "/images/projetos/nexus-chat/screenshot-1.png"

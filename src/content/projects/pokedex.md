@@ -10,8 +10,8 @@ embeddable: true
 embedUrl: "https://pokedex-3yck.onrender.com"
 featured: false
 privateProject: false
-startDate: 2024-01-01
-endDate: 2024-03-01
+startDate: 2026-04-29
+endDate: 2026-05-05
 tags: ["api", "full-stack", "python"]
 ---
 
