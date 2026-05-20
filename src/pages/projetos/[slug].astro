@@ -56,6 +56,8 @@ const hasEmbed = embeddable && embedUrl && !embedUrl.includes("{{");
 >
   <ProjectTheme slug={project.slug} />
   <div class="container pt-10 pb-24 relative z-10">
+    <!-- Névoa de legibilidade sobre as animações de fundo -->
+    <div class="fixed inset-0 z-0 pointer-events-none" aria-hidden="true" id="content-fog"></div>
     <!-- Breadcrumb -->
     <nav aria-label="Breadcrumb" class="mb-10">
       <ol class="flex items-center gap-2 text-sm text-[var(--text-muted)]">
@@ -87,7 +89,8 @@ const hasEmbed = embeddable && embedUrl && !embedUrl.includes("{{");
       </ol>
     </nav>
 
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl mx-auto relative">
+      <div class="absolute -inset-8 md:-inset-12 rounded-3xl bg-[var(--bg)]/75 backdrop-blur-[2px] -z-10" aria-hidden="true"></div>
       <!-- Header -->
       <header class="mb-10">
         <div class="flex flex-wrap items-center gap-3 mb-5">
@@ -116,12 +119,14 @@ const hasEmbed = embeddable && embedUrl && !embedUrl.includes("{{");
           {stack.map((tech) => <TechChip tech={tech} />)}
         </div>
 
-        <!-- Dates -->
-        <p class="text-sm text-[var(--text-muted)]">
-          {formatDate(startDate)} — {
-            endDate ? formatDate(endDate) : "em andamento"
-          }
-        </p>
+        <!-- Dates — oculto em projetos futuros -->
+        {status !== "futuro" && (
+          <p class="text-sm text-[var(--text-muted)]">
+            {formatDate(startDate)} — {
+              endDate ? formatDate(endDate) : "em andamento"
+            }
+          </p>
+        )}
       </header>
 
       <!-- Cover image -->
@@ -282,4 +287,27 @@ const hasEmbed = embeddable && embedUrl && !embedUrl.includes("{{");
       }
     </div>
   </div>
+
+<script is:inline>
+// Névoa radial nas bordas — mantém animação visível nas bordas mas protege o centro
+(function() {
+  var fog = document.getElementById("content-fog");
+  if (!fog) return;
+
+  function updateFog() {
+    var isDark = document.documentElement.classList.contains("dark");
+    var bg = isDark ? "10,10,10" : "255,255,255";
+    fog.style.background = [
+      "radial-gradient(ellipse 55% 60% at 50% 50%, rgba(" + bg + ",0) 0%, rgba(" + bg + ",0) 40%, rgba(" + bg + ",0.45) 70%, rgba(" + bg + ",0.75) 100%)"
+    ].join("");
+  }
+
+  updateFog();
+
+  // Atualiza quando o tema mudar
+  var observer = new MutationObserver(updateFog);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+})();
+</script>
+
 </BaseLayout>
