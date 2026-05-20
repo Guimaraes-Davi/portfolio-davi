@@ -9,8 +9,8 @@ githubUrl: "https://github.com/Guimaraes-Davi/prya"
 embeddable: false
 privateProject: false
 featured: true
-startDate: 2024-01-01
-endDate: 2025-12-01
+startDate: 2026-05-12
+endDate: 2026-05-20
 tags: ["ia", "privacidade", "local", "python", "rag"]
 ---
 

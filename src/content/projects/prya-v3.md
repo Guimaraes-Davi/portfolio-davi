@@ -9,11 +9,11 @@ githubUrl: ""
 embeddable: false
 privateProject: false
 featured: true
-startDate: 2025-06-01
+startDate: 2026-05-20
 tags: ["ia", "cli", "agentic", "python"]
 ---
 
-> **Nome provisório.** Prya V3 é o nome de trabalho atual e pode mudar antes do lançamento.
+> **Nome provisório.** Prya V3 é o nome de trabalho atual e pode mudar durante o desenvolvimento.
 
 CLI agentic que recebe pedidos em linguagem natural e executa ações no projeto: lê arquivos, edita código, cria arquivos, roda comandos. Diferente da Prya V2 (chat web local), a V3 roda no terminal, usa API externa via OpenRouter e opera sobre qualquer linguagem ou stack.
 
@@ -56,4 +56,4 @@ qwen/qwen-2.5-coder-32b-instruct
 
 ## Status
 
-Base funcional implementada (V3.0). Em pausa aguardando avanço em outros projetos do portfólio. Repositório privado — sem publicação pública ainda.
+Base funcional implementada (V3.0). Em pausa aguardando avanço em outros projetos do portfólio. Repositório privado — sem publicação pública.
