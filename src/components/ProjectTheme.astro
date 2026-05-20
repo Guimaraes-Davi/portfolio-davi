@@ -266,8 +266,8 @@ const { slug } = Astro.props;
       if (typeof gsap === "undefined") { setTimeout(init, 100); return; }
 
       var isDark = document.documentElement.classList.contains("dark");
-      var color = isDark ? "rgba(134,239,172,0.55)" : "rgba(22,163,74,0.55)";
-      var colorDim = isDark ? "rgba(134,239,172,0.30)" : "rgba(22,163,74,0.30)";
+      var color = isDark ? "rgba(134,239,172,0.90)" : "rgba(22,163,74,0.85)";
+      var colorDim = isDark ? "rgba(134,239,172,0.60)" : "rgba(22,163,74,0.55)";
 
       var leftEl = document.getElementById("terminal-left");
       var rightEl = document.getElementById("terminal-right");
@@ -524,19 +524,19 @@ const { slug } = Astro.props;
         r: Math.random() * 220 + 120,
         vx: (Math.random() - 0.5) * 0.25,
         vy: (Math.random() - 0.5) * 0.12,
-        alpha: Math.random() * 0.10 + 0.06,
+        alpha: Math.random() * 0.18 + 0.16,
         hue: Math.random() > 0.5 ? 0 : 200
       };
     });
 
-    var ashes = Array.from({ length: 60 }, function () {
+    var ashes = Array.from({ length: 90 }, function () {
       return {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         r: Math.random() * 2.5 + 0.5,
         speed: Math.random() * 0.5 + 0.15,
         drift: (Math.random() - 0.5) * 0.3,
-        alpha: Math.random() * 0.18 + 0.06
+        alpha: Math.random() * 0.22 + 0.20
       };
     });
 
