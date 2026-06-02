@@ -1,7 +1,7 @@
 ---
-title: "Hollow Reign"
+title: "Game Dev"
 status: "futuro"
-slug: "hollow-reign"
+slug: "game-dev"
 shortDescription: "Projeto de jogo indie 2D explorando sistemas modulares em Godot 4, com foco em arquitetura escalável e iteração rápida."
 description: "Projeto de game development em fase de design e pré-produção. Tower defense 2D em pixel art construído sobre Godot 4 com GDScript, explorando arquitetura modular baseada em nodes independentes, Resource files do Godot para dados estáticos e autoloads para sistemas globais (recursos, ciclo dia/noite, IA)."
 stack: ["Godot 4", "GDScript", "Aseprite", "Git"]

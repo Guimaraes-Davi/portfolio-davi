@@ -44,6 +44,16 @@ import Icon from "./Icon.astro";
         <a href={`mailto:${CONTACT.email}`} class="btn-outline">
           Entrar em contato
         </a>
+        <a
+          href={CONTACT.githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-outline"
+          aria-label="Perfil do GitHub de Davi (abre em nova aba)"
+        >
+          <Icon name="github" size={16} />
+          GitHub
+        </a>
         <button id="cv-preview-btn" class="btn-outline flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
