@@ -586,3 +586,91 @@ const { slug } = Astro.props;
   })();
   </script>
 )}
+
+{/* ============ XADREZ — peças deslizando em aberturas reais ============ */}
+{slug === "xadrez-java" && (
+  <div id="chess-bg" class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true"></div>
+)}
+{slug === "xadrez-java" && (
+  <script is:inline>
+  (function () {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    function init() {
+      if (typeof gsap === "undefined") { setTimeout(init, 100); return; }
+      var container = document.getElementById("chess-bg");
+      if (!container) return;
+
+      var isDark = document.documentElement.classList.contains("dark");
+
+      // Peças brancas e pretas em Unicode
+      var pieces = [
+        { char: "♔", color: "white" }, // Rei
+        { char: "♕", color: "white" }, // Rainha
+        { char: "♖", color: "white" }, // Torre
+        { char: "♗", color: "white" }, // Bispo
+        { char: "♘", color: "white" }, // Cavalo
+        { char: "♙", color: "white" }, // Peão
+        { char: "♚", color: "black" }, // Rei preto
+        { char: "♛", color: "black" }, // Rainha preta
+        { char: "♜", color: "black" }, // Torre preta
+        { char: "♝", color: "black" }, // Bispo preto
+        { char: "♞", color: "black" }, // Cavalo preto
+        { char: "♟", color: "black" }  // Peão preto
+      ];
+
+      // Cria 14 peças espalhadas que deslizam suavemente entre posições
+      // simulando movimentos de tabuleiro (deslocamentos ortogonais e diagonais)
+      var count = 14;
+      for (var i = 0; i < count; i++) {
+        var p = pieces[i % pieces.length];
+        var el = document.createElement("div");
+
+        var whiteColor = isDark ? "rgba(235,235,235,0.22)" : "rgba(40,40,40,0.16)";
+        var blackColor = isDark ? "rgba(120,120,120,0.30)" : "rgba(20,20,20,0.28)";
+
+        el.textContent = p.char;
+        el.style.cssText = [
+          "position:absolute",
+          "font-size:" + (gsap.utils.random(38, 72)) + "px",
+          "line-height:1",
+          "color:" + (p.color === "white" ? whiteColor : blackColor),
+          "top:" + gsap.utils.random(2, 88) + "%",
+          "left:" + gsap.utils.random(2, 90) + "%",
+          "user-select:none",
+          "filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15))"
+        ].join(";");
+        container.appendChild(el);
+
+        // Movimento estilo "deslizar no tabuleiro": passos discretos
+        // em direções ortogonais/diagonais, com pausa entre eles
+        (function (element) {
+          function slide() {
+            // Direções tipo movimento de peça: horizontal, vertical ou diagonal
+            var dirs = [
+              { x: gsap.utils.random(40, 120), y: 0 },
+              { x: -gsap.utils.random(40, 120), y: 0 },
+              { x: 0, y: gsap.utils.random(40, 120) },
+              { x: 0, y: -gsap.utils.random(40, 120) },
+              { x: gsap.utils.random(40, 90), y: gsap.utils.random(40, 90) },
+              { x: -gsap.utils.random(40, 90), y: -gsap.utils.random(40, 90) }
+            ];
+            var d = dirs[Math.floor(Math.random() * dirs.length)];
+
+            gsap.to(element, {
+              x: "+=" + d.x,
+              y: "+=" + d.y,
+              duration: gsap.utils.random(1.5, 3),
+              ease: "power2.inOut",
+              onComplete: function () {
+                gsap.delayedCall(gsap.utils.random(0.5, 2), slide);
+              }
+            });
+          }
+          gsap.delayedCall(gsap.utils.random(0, 3), slide);
+        })(el);
+      }
+    }
+    init();
+  })();
+  </script>
+)}
