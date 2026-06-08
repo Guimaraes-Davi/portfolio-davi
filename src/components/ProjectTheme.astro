@@ -600,8 +600,6 @@ const { slug } = Astro.props;
       var container = document.getElementById("chess-bg");
       if (!container) return;
 
-      var isDark = document.documentElement.classList.contains("dark");
-
       // Peças brancas e pretas em Unicode
       var pieces = [
         { char: "♔", color: "white" }, // Rei
@@ -618,28 +616,43 @@ const { slug } = Astro.props;
         { char: "♟", color: "black" }  // Peão preto
       ];
 
-      // Cria 14 peças espalhadas que deslizam suavemente entre posições
+      var elements = [];
+
+      // Cores recalculadas a cada troca de tema — evita peças "sumindo"
+      // quando o esquema muda entre claro/escuro depois do carregamento
+      function colorFor(pieceColor) {
+        var isDark = document.documentElement.classList.contains("dark");
+        if (pieceColor === "white") {
+          return isDark ? "rgba(235,235,235,0.30)" : "rgba(40,40,40,0.16)";
+        }
+        return isDark ? "rgba(160,160,160,0.30)" : "rgba(20,20,20,0.28)";
+      }
+
+      function applyColors() {
+        elements.forEach(function (item) {
+          item.el.style.color = colorFor(item.color);
+        });
+      }
+
+      // Cria peças espalhadas que deslizam suavemente entre posições
       // simulando movimentos de tabuleiro (deslocamentos ortogonais e diagonais)
-      var count = 14;
+      var count = 26;
       for (var i = 0; i < count; i++) {
         var p = pieces[i % pieces.length];
         var el = document.createElement("div");
 
-        var whiteColor = isDark ? "rgba(235,235,235,0.22)" : "rgba(40,40,40,0.16)";
-        var blackColor = isDark ? "rgba(120,120,120,0.30)" : "rgba(20,20,20,0.28)";
-
         el.textContent = p.char;
         el.style.cssText = [
           "position:absolute",
-          "font-size:" + (gsap.utils.random(38, 72)) + "px",
+          "font-size:" + (gsap.utils.random(34, 72)) + "px",
           "line-height:1",
-          "color:" + (p.color === "white" ? whiteColor : blackColor),
-          "top:" + gsap.utils.random(2, 88) + "%",
-          "left:" + gsap.utils.random(2, 90) + "%",
+          "top:" + gsap.utils.random(2, 92) + "%",
+          "left:" + gsap.utils.random(2, 94) + "%",
           "user-select:none",
           "filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15))"
         ].join(";");
         container.appendChild(el);
+        elements.push({ el: el, color: p.color });
 
         // Movimento estilo "deslizar no tabuleiro": passos discretos
         // em direções ortogonais/diagonais, com pausa entre eles
@@ -669,6 +682,13 @@ const { slug } = Astro.props;
           gsap.delayedCall(gsap.utils.random(0, 3), slide);
         })(el);
       }
+
+      applyColors();
+
+      // Observa mudanças na classe "dark" do <html> (toggle de tema) e
+      // recalcula as cores das peças para que continuem visíveis
+      var observer = new MutationObserver(applyColors);
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     }
     init();
   })();
