@@ -4,7 +4,8 @@ import StatusBadge from "../../components/StatusBadge.astro";
 import TechChip from "../../components/TechChip.astro";
 import Icon from "../../components/Icon.astro";
 import ProjectTheme from "../../components/ProjectTheme.astro";
-import { getAllProjects, formatDate } from "../../utils/projects";
+import ProjectEmbed from "../../components/ProjectEmbed.astro";
+import { getAllProjects } from "../../utils/projects";
 import { getCollection } from "astro:content";
 import { SITE } from "../../config";
 
@@ -28,9 +29,9 @@ const {
   liveUrl,
   embedUrl,
   embeddable,
+  embedProvider,
+  embedNote,
   screenshots,
-  startDate,
-  endDate,
   coverImage,
   privateProject,
 } = project.data;
@@ -47,6 +48,7 @@ const canonicalUrl = new URL(`/projetos/${project.slug}`, SITE.url).href;
 const hasGithub = githubUrl && !githubUrl.includes("{{");
 const hasLive = liveUrl && !liveUrl.includes("{{");
 const hasEmbed = embeddable && embedUrl && !embedUrl.includes("{{");
+const isGame = embedProvider === "itch";
 ---
 
 <BaseLayout
@@ -118,20 +120,11 @@ const hasEmbed = embeddable && embedUrl && !embedUrl.includes("{{");
         >
           {stack.map((tech) => <TechChip tech={tech} />)}
         </div>
-
-        <!-- Dates — oculto em projetos futuros -->
-        {status !== "futuro" && (
-          <p class="text-sm text-[var(--text-muted)]">
-            {formatDate(startDate)} — {
-              endDate ? formatDate(endDate) : "em andamento"
-            }
-          </p>
-        )}
       </header>
 
-      <!-- Cover image -->
+      <!-- Cover image — em projetos com embed a capa vira o poster do player -->
       {
-        coverImage && (
+        coverImage && !hasEmbed && (
           <div class="mb-10 rounded-xl overflow-hidden border border-[var(--border)]">
             <img
               src={coverImage}
@@ -148,20 +141,13 @@ const hasEmbed = embeddable && embedUrl && !embedUrl.includes("{{");
       {
         hasEmbed ? (
           <div class="mb-10">
-            <div class="rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--bg-subtle)]">
-              <div class="flex items-center gap-2 px-4 py-2.5 border-b border-[var(--border)] text-xs text-[var(--text-muted)]">
-                <Icon name="wrench" size={12} />
-                Aguarde — o servidor pode levar alguns segundos para iniciar
-                (cold start Render)
-              </div>
-              <iframe
-                src={embedUrl}
-                title={`Preview de ${title}`}
-                class="w-full h-[500px] md:h-[600px]"
-                loading="lazy"
-                sandbox="allow-scripts allow-same-origin allow-forms"
-              />
-            </div>
+            <ProjectEmbed
+              url={embedUrl!}
+              title={title}
+              provider={embedProvider}
+              note={embedNote}
+              poster={coverImage}
+            />
           </div>
         ) : screenshots && screenshots.length > 0 ? (
           <div class="mb-10">
@@ -228,10 +214,10 @@ const hasEmbed = embeddable && embedUrl && !embedUrl.includes("{{");
               target="_blank"
               rel="noopener noreferrer"
               class="btn-outline"
-              aria-label={`Abrir ${title} ao vivo (abre em nova aba)`}
+              aria-label={`${isGame ? "Jogar" : "Abrir"} ${title} (abre em nova aba)`}
             >
-              <Icon name="external-link" size={16} />
-              Abrir projeto ao vivo
+              <Icon name={isGame ? "gamepad" : "external-link"} size={16} />
+              {isGame ? "Jogar no itch.io" : "Abrir projeto ao vivo"}
             </a>
           )
         }

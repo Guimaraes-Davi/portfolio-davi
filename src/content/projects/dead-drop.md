@@ -10,8 +10,7 @@ embeddable: true
 embedUrl: "https://dead-drop.onrender.com"
 featured: true
 privateProject: false
-startDate: 2026-05-05
-endDate: 2026-05-07
+order: 8
 tags: ["seguranca", "criptografia", "node"]
 ---
 

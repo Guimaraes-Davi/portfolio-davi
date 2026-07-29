@@ -9,7 +9,7 @@ githubUrl: "https://github.com/Guimaraes-Davi/xadrez-java"
 embeddable: false
 privateProject: false
 featured: true
-startDate: 2026-05-01
+order: 9
 tags: ["java", "poo", "game-dev", "algoritmos"]
 ---
 

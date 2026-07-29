@@ -12,12 +12,14 @@ const projects = defineCollection({
     liveUrl: z.string().optional(),
     embedUrl: z.string().optional(),
     embeddable: z.boolean().default(false),
+    embedProvider: z.enum(["render", "itch"]).default("render"),
+    embedNote: z.string().optional(),
     coverImage: z.string().optional(),
     screenshots: z.array(z.string()).optional(),
     featured: z.boolean().default(false),
     privateProject: z.boolean().default(false),
-    startDate: z.coerce.date(),
-    endDate: z.coerce.date().optional(),
+    // Posição no grid — menor primeiro. Projetos sem order vão para o fim.
+    order: z.number().default(999),
     tags: z.array(z.string()).default([]),
     files: z.object({
       encoding: z.literal("utf8")

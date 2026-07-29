@@ -6,11 +6,13 @@ shortDescription: "Jogo de duelo samurai publicado no itch.io, desenvolvido do z
 description: "Jogo de duelo samurai desenvolvido do zero em Godot 4 com GDScript e publicado no itch.io. Um único golpe decide o combate. Inclui máquina de estados completa, progressão de inimigos data-driven com 8 perfis, menus, efeitos sonoros randomizados e música persistente via Autoload."
 stack: ["Godot 4", "GDScript"]
 liveUrl: "https://dtroyd.itch.io/corte-unico"
-embeddable: false
+embeddable: true
+embedUrl: "https://itch.io/embed-upload/2852407?color=0a0a0a"
+embedProvider: "itch"
+coverImage: "/images/projetos/corte-unico/cover.png"
 privateProject: false
 featured: true
-startDate: 2026-06-01
-endDate: 2026-06-01
+order: 3
 tags: ["game-dev", "godot", "indie", "publicado"]
 ---
 
@@ -36,4 +38,4 @@ Oito perfis de inimigo parametrizados por chance de finta, janela vulnerável, t
 
 ## Publicação
 
-Disponível gratuitamente em dtroyd.itch.io/corte-unico
+Disponível gratuitamente em [dtroyd.itch.io/corte-unico](https://dtroyd.itch.io/corte-unico)

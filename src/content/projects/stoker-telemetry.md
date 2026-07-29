@@ -9,8 +9,7 @@ githubUrl: "https://github.com/Guimaraes-Davi/stoker-telemetry"
 embeddable: false
 privateProject: false
 featured: true
-startDate: 2026-07-01
-endDate: 2026-07-01
+order: 2
 tags: ["backend", "mongodb", "nodejs", "analytics", "game-dev"]
 ---
 

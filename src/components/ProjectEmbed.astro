@@ -1,0 +1,99 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  url: string;
+  title: string;
+  provider?: "render" | "itch";
+  note?: string;
+  poster?: string;
+}
+
+const { url, title, provider = "render", note, poster } = Astro.props;
+
+const isGame = provider === "itch";
+
+const NOTES: Record<"render" | "itch", string> = {
+  render:
+    "Aguarde — o servidor pode levar alguns segundos para iniciar (cold start Render)",
+  itch: "Build web jogável no navegador — clique para carregar do itch.io",
+};
+
+const message = note ?? NOTES[provider];
+---
+
+<div
+  class="rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--bg-subtle)]"
+>
+  <div
+    class="flex items-center gap-2 px-4 py-2.5 border-b border-[var(--border)] text-xs text-[var(--text-muted)]"
+  >
+    <Icon name={isGame ? "gamepad" : "wrench"} size={12} />
+    {message}
+  </div>
+
+  {
+    isGame ? (
+      <div
+        class="embed-gate relative w-full aspect-video bg-black"
+        data-embed-url={url}
+        data-embed-title={`${title} — jogável`}
+      >
+        {poster && (
+          <img
+            src={poster}
+            alt={`Capa de ${title}`}
+            class="absolute inset-0 w-full h-full object-contain opacity-50 [image-rendering:pixelated]"
+            loading="lazy"
+            decoding="async"
+          />
+        )}
+        <button
+          type="button"
+          class="embed-gate-btn group absolute inset-0 w-full flex flex-col items-center justify-center gap-3 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-inset"
+        >
+          <span class="w-16 h-16 rounded-full border-2 border-white/70 bg-black/60 flex items-center justify-center pl-1 transition-transform duration-200 group-hover:scale-110">
+            <Icon name="play" size={24} />
+          </span>
+          <span class="text-sm font-medium">Jogar agora</span>
+          <span class="text-xs text-white/60 font-mono">
+            embed do itch.io — build web
+          </span>
+        </button>
+      </div>
+    ) : (
+      <iframe
+        src={url}
+        title={`Preview de ${title}`}
+        class="w-full h-[500px] md:h-[600px]"
+        loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-forms"
+      />
+    )
+  }
+</div>
+
+<script is:inline>
+  // Click-to-play: o embed do itch baixa o WASM assim que carrega, então só
+  // montamos o iframe depois da interação do usuário.
+  (function () {
+    document.querySelectorAll(".embed-gate").forEach(function (gate) {
+      var btn = gate.querySelector(".embed-gate-btn");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        var frame = document.createElement("iframe");
+        frame.src = gate.dataset.embedUrl;
+        frame.title = gate.dataset.embedTitle;
+        frame.className = "absolute inset-0 w-full h-full";
+        frame.setAttribute("frameborder", "0");
+        frame.setAttribute("scrolling", "no");
+        frame.setAttribute("allowfullscreen", "true");
+        frame.setAttribute(
+          "allow",
+          "autoplay; fullscreen *; gamepad; xr-spatial-tracking; cross-origin-isolated"
+        );
+        gate.replaceChildren(frame);
+      });
+    });
+  })();
+</script>

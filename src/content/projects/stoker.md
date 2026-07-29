@@ -8,7 +8,7 @@ stack: ["Godot 4", "GDScript", "Aseprite"]
 embeddable: false
 privateProject: true
 featured: true
-startDate: 2026-07-01
+order: 1
 tags: ["game-dev", "godot", "indie", "arquitetura"]
 ---
 

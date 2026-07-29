@@ -10,8 +10,7 @@ embeddable: true
 embedUrl: "https://leitor-xml.onrender.com"
 featured: false
 privateProject: false
-startDate: 2026-05-12
-endDate: 2026-05-12
+order: 10
 tags: ["fiscal", "xml", "python"]
 ---
 

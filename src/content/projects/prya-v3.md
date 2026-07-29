@@ -9,7 +9,7 @@ githubUrl: ""
 embeddable: false
 privateProject: false
 featured: true
-startDate: 2026-05-20
+order: 4
 tags: ["ia", "cli", "agentic", "python"]
 ---
 

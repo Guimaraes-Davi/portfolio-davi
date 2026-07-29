@@ -7,7 +7,7 @@ stack: ["Python", "Ollama", "Qwen2.5-Coder", "Pydantic v2", "SQLite", "Docker", 
 embeddable: false
 featured: true
 privateProject: true
-startDate: 2026-05-15
+order: 5
 tags: ["ia", "multi-agente", "pesquisa", "python"]
 ---
 
